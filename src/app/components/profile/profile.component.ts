@@ -13,14 +13,14 @@ import { WalletService } from '../../services/wallet.service';
 import { DigiCard } from '../../types/digi-card.types';
 import { Network } from '../../types/network.enum';
 import { PendingDigiCard } from '../../types/pending-digi-card.types';
+import { OffchainService } from 'src/app/services/offchain.service';
 import {
   NgxFileDropEntry,
   FileSystemFileEntry,
   FileSystemDirectoryEntry,
 } from 'ngx-file-drop';
-import { OffchainService } from '../../services/offchain.service';
+import { Console } from 'node:console';
 
-import { Route } from '@angular/compiler/src/core';
 
 
 @Component({
@@ -104,6 +104,7 @@ export class ProfileComponent implements OnInit {
  async updateProfile(): Promise<void> {
 
     const droppedFile = this.loadFiles[0];
+    //console.log(droppedFile);
     if (droppedFile.fileEntry.isFile) {
       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
       fileEntry.file(async (file: File) => {
@@ -115,7 +116,7 @@ export class ProfileComponent implements OnInit {
                 file,
                 droppedFile.relativePath
             );
-         
+            //console.log(ipfs.uri);
             await this.verifieds.updProfileData(this.address, ipfs.uri);
             window.location.reload();
         } catch (e) {
@@ -127,8 +128,8 @@ export class ProfileComponent implements OnInit {
     }
   }  
 
-  loadData(): void {
-    this.profile = this.verifieds.getFullProfile(this.address);
+  async loadData(){
+    this.profile = await this.verifieds.getFullProfile(this.address);
     this.myCards = null;
     this.otherNfts = null;
     this.pendingAuctions = null;
@@ -146,6 +147,7 @@ export class ProfileComponent implements OnInit {
     this.loadActivityHistory();
   }
 
+ 
   truncate (fullStr, strLen, separator) {
     if (fullStr.length <= strLen) return fullStr;
 
