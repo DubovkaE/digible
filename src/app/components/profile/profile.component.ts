@@ -18,8 +18,10 @@ import {
   FileSystemFileEntry,
   FileSystemDirectoryEntry,
 } from 'ngx-file-drop';
-
 import { OffchainService } from '../../services/offchain.service';
+
+import { Route } from '@angular/compiler/src/core';
+
 
 @Component({
   selector: 'app-profile',
@@ -60,6 +62,7 @@ export class ProfileComponent implements OnInit {
     private readonly router: Router,
     private readonly matic: MaticService,
     private readonly marketplace: MarketplaceService,
+    private readonly offChain: OffchainService,
   ) { }
 
   ngOnInit(): void {
