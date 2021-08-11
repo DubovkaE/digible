@@ -107,6 +107,11 @@ export class VerifiedWalletsService {
       ? this.verifiedProfiles[address]
       : undefined;
   }
+  
+  async updProfileData(address: string, profileImage: string) {
+    const ipfs = await this.offchain.updProfile(address, profileImage);
+    return ipfs['status'] == 'success';
+  }
 
   getCustomBorder(address: string): string | undefined {
     return this.verifiedProfiles[address]
