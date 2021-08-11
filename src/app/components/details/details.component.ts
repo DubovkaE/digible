@@ -430,6 +430,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.loadingLastBids = false;
   }
 
+  isJson(string) {
+    try {
+      JSON.parse(string);
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+  
   async getCardDetails(): Promise<void> {
     let card;
     try {
