@@ -13,6 +13,13 @@ import { WalletService } from '../../services/wallet.service';
 import { DigiCard } from '../../types/digi-card.types';
 import { Network } from '../../types/network.enum';
 import { PendingDigiCard } from '../../types/pending-digi-card.types';
+import {
+  NgxFileDropEntry,
+  FileSystemFileEntry,
+  FileSystemDirectoryEntry,
+} from 'ngx-file-drop';
+
+import { OffchainService } from '../../services/offchain.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +45,7 @@ export class ProfileComponent implements OnInit {
   isYourProfile = false;
   loading = false;
   activityHistory = null;
-
+  loadFiles;
   tokenName;
   inputAddress;
 
@@ -81,6 +88,41 @@ export class ProfileComponent implements OnInit {
       this.canMint = canMint;
     });
   }
+
+  
+  async dropped(files: NgxFileDropEntry[]): Promise<void> {
+    if (files.length === 0) {
+      return;
+    }
+    this.loadFiles = files;
+    this.updateProfile();
+  }
+  
+ async updateProfile(): Promise<void> {
+
+    const droppedFile = this.loadFiles[0];
+    if (droppedFile.fileEntry.isFile) {
+      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+      fileEntry.file(async (file: File) => {
+        this.loading = true;
+        try {
+            const signature = '0x49c92d11f1cbb03e808d51982140a7b77eae92aac8ab453b44333715a5b471760b175f7112ff6be10a17bcc731024e456762affc3bd510256c758f7720007a7f1c';
+            const ipfs = await this.offChain.uploadFile(
+                signature,
+                file,
+                droppedFile.relativePath
+            );
+         
+            await this.verifieds.updProfileData(this.address, ipfs.uri);
+            window.location.reload();
+        } catch (e) {
+            alert('error: '+e);
+        }
+
+        this.loading = false;
+      });
+    }
+  }  
 
   loadData(): void {
     this.profile = this.verifieds.getFullProfile(this.address);
