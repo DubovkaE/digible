@@ -187,6 +187,9 @@ export class NftService {
 
   async bid(auctionId: number, amount: string): Promise<void> {
     const from = await this.getAccount();
+
+    amount = String(Number(amount));
+    
     await (await this.getAuctionContract()).methods
       .participateAuction(auctionId, amount)
       .send({ from });
@@ -226,7 +229,6 @@ export class NftService {
     const fromBlock =
       (await this.wallet.getMaticInfuraWeb3().eth.getBlockNumber()) -
       environment.blocksInEvents;
-
     return new Promise(async (resolve, reject) => {
       await (
         await this.getAuctionContract(true)
@@ -361,11 +363,8 @@ export class NftService {
     const fromBlock =
       (await this.wallet.getMaticInfuraWeb3().eth.getBlockNumber()) -
       environment.blocksInEvents;
-
     return new Promise(async (resolve, reject) => {
-      await (
-        await this.getAuctionContract(true)
-      ).getPastEvents(
+      await (await this.getAuctionContract(true)).getPastEvents(
         'NewHighestOffer',
         {
           filter: {
@@ -378,6 +377,7 @@ export class NftService {
           if (error) {
             resolve(error);
           } else {
+            
             resolve(
               events
                 .map((event) => {
@@ -393,6 +393,7 @@ export class NftService {
           }
         }
       );
+
     });
   }
 

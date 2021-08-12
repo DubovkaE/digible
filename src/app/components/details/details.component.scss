@@ -21,19 +21,22 @@
 }
 
 .c-details__title {
-  display: inline-block;
+  display: flex;
   font-size: 31px;
   color: #213458;
   font-weight: bold;
   text-transform: capitalize;
+  margin-bottom: 1rem;
+
+  .icon-creator {
+    width: 15px;
+    height: 15px;
+    background-image: url("/assets/images/icons/creator.svg");
+  }
 
   :host-context(.dark-mode) & {
     color: #ffffff;
   }
-}
-
-.icon-creator {
-  background-image: url("/assets/images/icons/creator.svg");
 }
 
 .c-details__buttons {
@@ -43,6 +46,7 @@
   .btn {
     margin-bottom: 1rem;
     border: 1px solid #213458;
+    width: 100%;
 
     :host-context(.dark-mode) & {
       border: 1px solid white;
@@ -56,5 +60,20 @@
   font-size: 18px;
   :host-context(.dark-mode) & {
     color: #ffffff;
+  }
+}
+
+.c-details__list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.c-details__price {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    width: 1rem;
+    width: 1rem;
   }
 }
