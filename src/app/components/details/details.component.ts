@@ -1,22 +1,17 @@
-import { DatePipe, Location } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MarketplaceService } from 'src/app/services/marketplace.service';
-import { MathService } from 'src/app/services/math.service';
-import { MaticService } from 'src/app/services/matic.service';
-import { NftService } from 'src/app/services/nft.service';
-import { OffchainService } from 'src/app/services/offchain.service';
-import { VerifiedWalletsService } from 'src/app/services/verified-wallets.service';
-import { WalletService } from 'src/app/services/wallet.service';
-import { Network } from 'src/app/types/network.enum';
-import { environment } from 'src/environments/environment';
+import {DatePipe, Location} from '@angular/common';
+import {ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, } from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MarketplaceService} from 'src/app/services/marketplace.service';
+import {MathService} from 'src/app/services/math.service';
+import {MaticService} from 'src/app/services/matic.service';
+import {NftService} from 'src/app/services/nft.service';
+import {OffchainService} from 'src/app/services/offchain.service';
+import {VerifiedWalletsService} from 'src/app/services/verified-wallets.service';
+import {WalletService} from 'src/app/services/wallet.service';
+import {Network} from 'src/app/types/network.enum';
+import {environment} from 'src/environments/environment';
+import {HelpersService} from '../../services/helpers.service';
+import {DescriptionType} from '../../types/description.type';
 
 @Component({
   selector: 'app-details',
@@ -31,15 +26,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   symbol = environment.stableCoinSymbol;
   name = '...';
   network = '...';
-  description: {
-    publisher: string,
-    edition: string,
-    year: string,
-    graded: string,
-    population: string,
-    backCardImage: string,
-    description: string
-  };
+  description: DescriptionType;
+  nftData;
   winner = '...';
   customBorder;
   winnerIsVerified;
@@ -114,6 +102,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private readonly market: MarketplaceService,
     private readonly matic: MaticService,
     private readonly verifiedProfiles: VerifiedWalletsService,
+    private readonly helpers: HelpersService,
     public datepipe: DatePipe
   ) {
     this.canGoBack = !!this.router.getCurrentNavigation()?.previousNavigation;
@@ -222,7 +211,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.fee = parseInt(prompt('Input your desired fee %', '5'));
+    this.fee = parseInt(prompt('Input your desired fee %', '5'), undefined);
 
     try {
       await this.market.applyRoyalty(this.id, this.address, this.fee);
@@ -249,7 +238,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.fee = parseInt(prompt('Input your desired fee %', '5'));
+    this.fee = parseInt(prompt('Input your desired fee %', '5'), undefined);
 
     try {
       await this.nft.applyRoyalty(this.id, this.address, this.fee);
@@ -274,14 +263,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async loadLastSells(): Promise<void> {
     this.loadingLastSells = true;
-    console.log(this.nft)
-    console.log(this.id)
 
     let lastSells = await this.market.lastSells(
       this.id,
       await this.nft.getNftAddress(true)
     );
-      console.log(lastSells)
     try {
       lastSells = [
         ...lastSells,
@@ -387,7 +373,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       if (auction.available) {
         this.auction = true;
-        const price = await this.nft.getAuctionPrice(auctionId, auction);
+        let price = await this.nft.getAuctionPrice(auctionId, auction);
         this.price = this.math.toHumanValue(price.price);
         const winnerName = this.verifiedProfiles.getVerifiedName(price.winner);
 
@@ -396,7 +382,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           price.winner === this.address
         ) {
           this.highestBid = setInterval(async () => {
-            const price = await this.nft.getAuctionPrice(auctionId, auction);
+            price = await this.nft.getAuctionPrice(auctionId, auction);
             if (price.winner !== this.address) {
               // tslint:disable-next-line: no-unused-expression
               new Notification('You have been outbidded!');
@@ -416,7 +402,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.winner = price.winner;
           this.winnerIsVerified = false;
         }
-        
+
         this.priceBuyNow = this.math.toHumanValue(auction.fixedPrice);
         this.priceBuyNowDecimals = parseInt(auction.fixedPrice, undefined);
         this.endDate = auction.endDate;
@@ -444,23 +430,25 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
     return true;
   }
+  
   async getCardDetails(): Promise<void> {
     let card;
     try {
       card = await this.offChain.getNftData(this.id);
     } catch (e) {
       console.error(e);
-      this.router.navigate(['/newest']);
+      await this.router.navigate(['/']);
       return;
     }
-    this.name = card.name.charAt(0).toUpperCase() + card.name.slice(1).toLowerCase();;
-    if (this.isJson(card.description)) {
+    this.name = card.name.charAt(0).toUpperCase() + card.name.slice(1).toLowerCase();
+    if (this.helpers.isJson(card.description)) {
       const data = JSON.parse(card.description);
-      this.description = data.description
+      this.description = data;
+      this.nftData = data;
     } else {
       this.description = card.description;
     }
-  
+
     this.physical = card.physical;
     this.fillDescriptionFields();
   }
@@ -480,7 +468,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.explorerPrefixOfOwner = network.prefix;
     this.ownerAddress = owner.address;
 
-    if (owner.address == '0x000000000000000000000000000000000000dEaD') {
+    if (owner.address === '0x000000000000000000000000000000000000dEaD') {
       const tx = await this.nft.getBurnTransaction(this.id);
 
       if (tx[0].blockNumber) {
@@ -515,6 +503,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     });
     this.contractAddress = await this.nft.getNftAddress(true);
+
     this.cdr.detectChanges();
   }
 
@@ -536,10 +525,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.allowedMarket = await this.nft.allowedTokenFor(
       this.market.getMarketplaceAddress()
     );
-    this.allowedMarket = parseInt(this.allowedMarket);
+    this.allowedMarket = parseInt(this.allowedMarket, undefined);
   }
 
-  onBlur(evt) {
+  onBlur(evt): void {
     if (evt.target.valueAsNumber) {
       this.inputAmount = evt.target.valueAsNumber.toFixed(2);
     }
@@ -668,13 +657,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.fullDescription,
         this.id,
       );
-      await this.getCardDetails();
+
       alert('Description updated!');
     } catch (e) {
       alert('Error updating.');
       console.error(e);
     }
     this.descriptionLoading = false;
+    await this.getCardDetails();
+    this.fillDescriptionFields();
     this.editDescriptionModal.nativeElement.click();
   }
 

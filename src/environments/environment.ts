@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   infuraId: '11185ce0751941c68277973c6c4151bb',
-  offchainApi: 'http://localhost:3000',// 'https://sandbox.arkerlabs.com:4009',
+  offchainApi: 'http://localhost:3000',
   testnet: true,
   stableCoinAddress: '0xDcF513F3E5358467B1a4ec1a78411169a1Fdc5f3',
   stableCoinAddressEth: '0xe4ffd592b36e92e1a53c01f441728a1e5d953c24',
@@ -28,7 +28,7 @@ export const environment = {
     11, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
     31, 32, 33, 34, 35, 37, 38, // 18, 36, 10, 61, 4, 66, 76
   ],
-  blocksInEvents: 170000,
+  blocksInEvents: 99999,
 };
 
 /*

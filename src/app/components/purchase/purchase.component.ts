@@ -56,7 +56,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   getCollection(){
-    var wallets = new VerifiedWalletsService();
+    var wallets = new VerifiedWalletsService(this.offchain);
     var walletsArr = wallets.verifiedProfiles;
     this.listUsers = Object.keys(walletsArr).map((key) => [String(key), walletsArr[key]]);
     for(var i=0; i < this.listUsers.length ; i++){
@@ -150,7 +150,7 @@ export class PurchaseComponent implements OnInit {
         method: 'wallet_addEthereumChain',
         params: [
           {
-            chainId: '80001',
+            chainId: '0x13881',
             chainName: 'Matic Testnet',
             nativeCurrency: {
               name: 'MATIC',
