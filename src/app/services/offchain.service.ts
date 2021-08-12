@@ -75,14 +75,6 @@ export class OffchainService {
     ).status;
   }
   
-  async updProfile(address: string, profileImage: string): Promise<{uri: string, hash: string}> {
-    var formData = new FormData();
-    formData.append('id', address);
-    formData.append('picture', profileImage);
-    return (await this.http.post('http://localhost:3000/profile/upd/'+address, formData, { responseType: 'json' }).toPromise()) as any;
-    //return (await this.http.post('http://obicon.xyz/api/profile_data/?update&address='+address, formData, { responseType: 'json' }).toPromise()) as any;
-  }
-
   async addDescrption(
     signature: string,
     description: string,

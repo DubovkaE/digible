@@ -109,40 +109,9 @@ export class VerifiedWalletsService {
       : undefined;
   }
   
-  async getFullProfile(address: string): Profile | undefined {
-    //var data = this.verifiedProfiles[address];
-    let data = await this.getProfileData(address);
-    //if (data)
-    if (data['status'] != 'success') {
-        return undefined;
-    } else {
-        return data;
-    }
-  }
-  
-  async getProfileData(address: string) {
-    const request = new Request(`http://localhost:3000/profile/`+address,
-   // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
-    {
-        method: "GET"
-    });
-    var data = await fetch(request).then( response => response.json()
-    //.then(ttt => alert(ttt['picture'])) 
-    //.then( ttt => {  return ttt })
-    );
-
-    return data;
-  }
-  
-  async updProfileData(address: string, profileImage: string) {
-    const ipfs = await this.offchain.updProfile(address, profileImage);
-    return ipfs['status'] == 'success';
-  }
-
   async getFullProfile(address: string){
     //var data = this.verifiedProfiles[address];
     let data = await this.getProfileData(address);
-    //if (data)
     if (data['status'] != 'success') {
         return undefined;
     } else {
@@ -152,7 +121,6 @@ export class VerifiedWalletsService {
 
   async getProfileData(address: string) {
     const request = new Request(`http://localhost:3000/profile/`+address,
-   // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
     {
         method: "GET"
     });
@@ -160,7 +128,6 @@ export class VerifiedWalletsService {
     //.then(ttt => alert(ttt['picture'])) 
     //.then( ttt => {  return ttt })
     );
-    //console.log(data);
     return data;
   }
 
