@@ -103,13 +103,13 @@ export class CreateCardComponent implements OnInit {
     if (files.length === 0) {
       return;
     }
-    this.loading = true;
     const droppedFile = files[0];
 
     if (droppedFile && droppedFile.fileEntry.isFile) {
       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
 
       fileEntry.file(async (file: File) => {
+        this.loading = true;
         try {
           const signature = await this.sign();
           const ipfs = await this.offchain.uploadFile(
@@ -121,26 +121,27 @@ export class CreateCardComponent implements OnInit {
           this.ipfsHash = ipfs.hash;
           this.isVideo = await this.offchain.isVideo(ipfs.uri);
           this.ipfsUri = ipfs.uri;
-          this.walletReceiver = await this.wallet.getAccount();
-        } catch (e) {
+          if (!this.walletReceiver) {
+            this.walletReceiver = await this.wallet.getAccount();
+          }
           this.loading = false;
+        } catch (e) {
         }
       });
     }
-    this.loading = false;
   }
 
   async droppedBackSide(files: NgxFileDropEntry[]): Promise<void> {
     if (files.length === 0) {
       return;
     }
-    this.loading = true;
     const droppedFileBack = files[0];
 
     if (droppedFileBack && droppedFileBack.fileEntry.isFile) {
       const fileEntry2 = droppedFileBack.fileEntry as FileSystemFileEntry;
 
       fileEntry2.file(async (file: File) => {
+        this.loading = true;
         try {
           const signature = await this.sign();
           const ipfs2 = await this.offchain.uploadFile(
@@ -152,12 +153,14 @@ export class CreateCardComponent implements OnInit {
           this.ipfsHashBack = ipfs2.hash;
           this.isVideoBack = await this.offchain.isVideo(ipfs2.uri);
           this.ipfsUriBack = ipfs2.uri;
-        } catch (e) {
+          if (!this.walletReceiver) {
+            this.walletReceiver = await this.wallet.getAccount();
+          }
           this.loading = false;
+        } catch (e) {
         }
       });
     }
-    this.loading = false;
   }
 
   async sign(message = ''): Promise<string> {
