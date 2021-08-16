@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
 import { MathService } from 'src/app/services/math.service';
 import { NftService } from 'src/app/services/nft.service';
@@ -7,8 +7,6 @@ import { VerifiedWalletsService } from 'src/app/services/verified-wallets.servic
 import { environment } from 'src/environments/environment';
 import { WalletService } from 'src/app/services/wallet.service';
 import { CountdownConfig, CountdownFormatFn } from 'ngx-countdown';
-import { HelpersService } from '../../services/helpers.service';
-import { DescriptionType } from '../../types/description.type';
 
 @Component({
   selector: 'app-digi-card',
@@ -17,17 +15,6 @@ import { DescriptionType } from '../../types/description.type';
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DigiCardComponent implements OnInit {
-
-  constructor(
-    private offchain: OffchainService,
-    private nft: NftService,
-    private math: MathService,
-    private cdr: ChangeDetectorRef,
-    private market: MarketplaceService,
-    private readonly walletService: WalletService,
-    private verifiedProfiles: VerifiedWalletsService,
-    private helpers: HelpersService
-  ) {}
   @Input() id: number;
   @Input() router;
   @Input() price: number = null;
@@ -45,7 +32,16 @@ export class DigiCardComponent implements OnInit {
   physical: boolean;
   image = '/assets/images/cards/loading.png';
   backImage = '/assets/images/cards/loading.png';
-  description: DescriptionType;
+  description: {
+    publisher: string;
+    edition: string;
+    year: string;
+    graded: string;
+    population: string;
+    backCardImage: string;
+    description: string;
+  };
+  offChainData;
   name = '...';
   // changeDetection: ChangeDetectionStrategy.OnPush
   config: CountdownConfig;
@@ -58,11 +54,9 @@ export class DigiCardComponent implements OnInit {
     ['s', 1000], // seconds
     ['S', 1], // million seconds
   ];
-  isVideo = false;
-  isBackVideo = false;
   formatDate?: CountdownFormatFn = ({ date, formatStr, timezone }) => {
     let duration = Number(date || 0);
-
+    
     return this.CountdownTimeUnits.reduce((current, [name, unit]) => {
       if (current.indexOf(name) !== -1) {
       const v = Math.floor(duration / unit);
@@ -71,9 +65,21 @@ export class DigiCardComponent implements OnInit {
         return v.toString().padStart(match.length, '0');
       });
     }
-      return current;
+    return current;
     }, formatStr);
-  }
+  };
+  isBackVideo = false;
+  isVideo = false;
+
+  constructor(
+    private offchain: OffchainService,
+    private nft: NftService,
+    private math: MathService,
+    private cdr: ChangeDetectorRef,
+    private market: MarketplaceService,
+    private readonly walletService: WalletService,
+    private verifiedProfiles: VerifiedWalletsService
+  ) {}
 
   ngOnInit(): void {
     if ((this.price as any) === '') {
@@ -85,6 +91,7 @@ export class DigiCardComponent implements OnInit {
   async loadData(): Promise<void> {
     this.getAddress();
     this.loadOffChainData();
+    
     if (this.price == null) {
       this.loadAuction().then(() => {
         this.loadOwner();
@@ -113,13 +120,13 @@ export class DigiCardComponent implements OnInit {
     const auctionId = await this.nft.getAuctionIdByToken(
       parseInt(this.id + '', undefined)
     );
-    if (auctionId != null) {
+    if (auctionId != null) {      
       const auction = await this.nft.getAuctionById(auctionId);
       this.auctionOwner = auction.owner;
       this.endDate = auction.endDate;
-      this.endDate = this.endDate * 1000;
-      this.config = { stopTime: new Date(this.endDate).getTime(), format: 'DD:HH:mm:ss', formatDate : this.formatDate };
-
+      this.endDate = this.endDate * 1000
+      this.config = { stopTime: new Date(this.endDate).getTime(), format: 'DDd HHh mm:ss', formatDate : this.formatDate };
+      
       if (auction.available) {
         this.auction = true;
         this.price = this.math.toHumanValue(
@@ -147,27 +154,28 @@ export class DigiCardComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  IsJsonString(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
   async loadOffChainData(): Promise<void> {
     const card = await this.offchain.getNftData(this.id);
+    const isJson = this.IsJsonString(card.description);
     this.physical = card.physical;
     this.image = card.image;
 
-    if (this.helpers.isJson(card.description)) {
-      this.description = JSON.parse(card.description);
-
+    if (isJson) {
+      this.description = JSON.parse(card.description).description;
+      this.offChainData = JSON.parse(card.description)
+      
       if (this.description.backCardImage) {
         this.backImage = this.description.backCardImage;
       }
-    } else {
-      this.description = {
-        publisher: '',
-        edition: '',
-        year: '',
-        graded: '',
-        population: '',
-        description: card.description || '',
-        backCardImage: ''
-      };
     }
 
     this.name =
@@ -184,5 +192,5 @@ export class DigiCardComponent implements OnInit {
     }
   }
 
-  keepOriginalOrder = (a) => a.key;
+  keepOriginalOrder = (a, b) => a.key;
 }

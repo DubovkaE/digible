@@ -84,7 +84,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   descriptionLoading = false;
   firstSale: boolean;
   firstAuction: boolean;
-  nftAddress: string;
+  nftAddress:string;
   lastSells;
   backSideImageExists = false;
 
@@ -92,7 +92,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly route: ActivatedRoute,
-    readonly router: Router,
+    private readonly router: Router,
     private readonly location: Location,
     private readonly offChain: OffchainService,
     private readonly walletService: WalletService,
@@ -109,6 +109,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
     this.route.params.subscribe((queryParams) => {
       this.id = queryParams.id;
       if (
@@ -300,7 +301,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.loading = true;
     try {
       await this.nft.setApprovalForAll(environment.maticPredicate);
-      await this.checkApproveMatic();
+      this.checkApproveMatic();
     } catch (e) {
       console.error(e);
     }
@@ -422,6 +423,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.loadingLastBids = false;
   }
 
+  isJson(string) {
+    try {
+      JSON.parse(string);
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+  
   async getCardDetails(): Promise<void> {
     let card;
     try {
@@ -435,7 +445,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (this.helpers.isJson(card.description)) {
       const data = JSON.parse(card.description);
       this.description = data;
-      this.backSideImageExists = !!this.description.backCardImage;
       this.nftData = data;
     } else {
       this.description = card.description;

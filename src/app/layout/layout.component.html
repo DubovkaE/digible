@@ -9,7 +9,6 @@
     <div class="c-header__inner">
       <a [routerLink]="['/']" class="d-flex c-header__logo-link">
         <span class="icon logo c-header__logo"></span>
-        <div class="logo-name"><span>Digible</span></div>
       </a>
       <div class="c-header__search">
         <input
@@ -55,7 +54,6 @@
             <input type="checkbox" id="checkbox" />
             <div class="slider round"></div>
           </label>
-          <!-- <em>Enable Dark Mode!</em> -->
         </div>
         <div (click)="mobileMenuToggle()" class="c-hamburger">
           <div class="c-hamburger__inner">
@@ -251,35 +249,31 @@
   <div class="row container m-auto justify-center">
     <div class="col-lg-3 col-md-4 col-sm-6 d-flex items-center justify-center">
       <img
-        style="width: 100%"
+        style="max-width: 200px; max-height: 50px"
         src="../../../assets/images/sl-logo.png"
         alt=""
       />
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 d-flex items-center justify-center">
       <img
-        style="width: 100%"
-        src="../../../assets/images/gebo-logo.png"
+        style="max-height: 50px;"
+        src="../../../assets/images/psalogo.png"
         alt=""
       />
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 d-flex items-center justify-center">
-      <div class="row">
-        <div class="col-6">
-          <img
-            style="width: 100%"
-            src="../../../assets/images/cgc-logo.png"
-            alt=""
-          />
-        </div>
-         <div class="col-6">
-          <img
-            style="width: 100%"
-            src="../../../assets/images/logo-aoki.png"
-            alt=""
-          />
-        </div>
-      </div>
+      <img
+        style="max-height: 50px;"
+        src="../../../assets/images/cgc-logo.png"
+        alt=""
+      />
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6 d-flex items-center justify-center">
+      <img
+        style="max-height: 50px;"
+        src="../../../assets/images/logo-aoki.png"
+        alt=""
+      />
     </div>
   </div>
 </div>
@@ -314,6 +308,13 @@
                     class="required email c-footer__input"
                     id="mce-EMAIL"
                   />
+                  <input
+                    type="submit"
+                    value="Subscribe"
+                    name="subscribe"
+                    id="mc-embedded-subscribe"
+                    class="btn btn-secondary c-footer__submit"
+                  />
                 </div>
                 <div id="mce-responses" class="clear">
                   <div
@@ -337,15 +338,6 @@
                     name="b_7bf882e0587e43a3271eb395f_c58f297380"
                     tabindex="-1"
                     value=""
-                  />
-                </div>
-                <div class="clear">
-                  <input
-                    type="submit"
-                    value="Subscribe"
-                    name="subscribe"
-                    id="mc-embedded-subscribe"
-                    class="btn btn-secondary c-footer__submit"
                   />
                 </div>
               </div>
@@ -469,7 +461,7 @@
         <span class="pr-2 pl-2">|</span>
         <a [routerLink]="['/terms-and-conditions']">Terms and Conditions</a>
       </div>
-      <div class="c-footer__network" *ngIf="!hideNetwork">
+      <div class="c-network" *ngIf="!hideNetwork">
         <span>Network: {{ network }}</span>
         <br />
         <span class="testnet" *ngIf="testnet">Testnet: Yes</span>
