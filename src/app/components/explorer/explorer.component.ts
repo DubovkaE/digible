@@ -23,7 +23,7 @@ export class ExplorerComponent implements OnInit {
   loading = false;
   currentOffset = 0;
   endReached = false;
-  readonly limit = 12;
+  readonly limit = 24;
 
   constructor(
     private readonly nft: NftService,
@@ -64,8 +64,8 @@ export class ExplorerComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  switchToMatic(): void {
-    this.wallet.switchToMatic();
+  async switchToMatic(): Promise<void> {
+    await this.wallet.switchToMatic();
   }
 
   async loadMore(): Promise<void> {
