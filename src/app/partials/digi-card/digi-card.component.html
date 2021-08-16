@@ -4,7 +4,7 @@
   class="c-card"
   [ngClass]="{ auction: auction === true }"
 >
-  <figure class="c-card__figure">
+  <figure class="c-card__figure mb-2">
     <lib-ngx-image-zoom
       *ngIf="!isVideo && view === 'details'"
       class="c-card__figure__video"
@@ -38,6 +38,35 @@
       *ngIf="auction && endDate && view !== 'profile'"
       class="c-card__countdown"
     >
+      <countdown #cd [config]="config"></countdown>
+      <span class="ml-2">Left</span>
+      <span class="icon auctions p-0"></span>
+    </div>
+  </figure>
+  <figure class="c-card__figure" *ngIf="backSide">
+    <img
+      *ngIf="!isBackVideo"
+      class="c-card__figure__video"
+      [ngClass]="{
+        shadow_card: physical,
+        custom_border: customBorder
+      }"
+      [src]="backImage"
+      alt="image"
+    />
+
+    <video
+      *ngIf="isBackVideo"
+      ref="videoRef"
+      class="c-card__figure__video"
+      autoplay
+      muted
+      playsinline
+      loop
+      [src]="backImage"
+    >
+    </video>
+    <div *ngIf="auction && endDate && view !== 'details' && view !== 'profile'" class="c-card__countdown">
       <countdown #cd [config]="config"></countdown>
       <span class="ml-2">Left</span>
       <span class="icon auctions p-0"></span>
