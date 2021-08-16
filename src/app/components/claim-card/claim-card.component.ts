@@ -40,7 +40,7 @@ export class ClaimCardComponent implements OnInit {
 
   async loadData(): Promise<void> {
     this.burned =
-      (await (await this.nft.owner(this.id)).address) ===
+      ((await this.nft.owner(this.id)).address) ===
       '0x000000000000000000000000000000000000dEaD';
   }
 
@@ -66,7 +66,7 @@ export class ClaimCardComponent implements OnInit {
         '0x000000000000000000000000000000000000dEaD'
       );
       alert('Your card has been burned!');
-      this.router.navigate(['/']);
+      await this.router.navigate(['/']);
     } catch (e) {}
     this.loading = false;
   }

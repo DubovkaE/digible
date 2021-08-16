@@ -133,7 +133,7 @@ export class NftService {
         await (await this.getAuctionContract(true)).methods
           .royaltiesByToken(tokenId)
           .call()
-      ).fee
+      ).fee, undefined
     );
   }
 
@@ -189,7 +189,7 @@ export class NftService {
     const from = await this.getAccount();
 
     amount = String(Number(amount));
-    
+
     await (await this.getAuctionContract()).methods
       .participateAuction(auctionId, amount)
       .send({ from });
@@ -377,7 +377,7 @@ export class NftService {
           if (error) {
             resolve(error);
           } else {
-            
+
             resolve(
               events
                 .map((event) => {
