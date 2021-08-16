@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Profile } from '../types/profile.type';
 import { OffchainService } from '../services/offchain.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class VerifiedWalletsService {
@@ -147,7 +148,7 @@ export class VerifiedWalletsService {
   }
 
   async getProfileData(address: string) {
-    const request = new Request(`https://sandbox.arkerlabs.com:4009/profile/`+address,
+    const request = new Request(environment.offchainApi+`/profile/`+address,
    // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
     {
         method: "GET"
@@ -156,7 +157,7 @@ export class VerifiedWalletsService {
     //.then(ttt => alert(ttt['picture'])) 
     //.then( ttt => {  return ttt })
     );
-    console.log('data:', data);
+    //console.log('data:', data);
     return data;
   }
 
