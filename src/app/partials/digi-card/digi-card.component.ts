@@ -158,6 +158,16 @@ export class DigiCardComponent implements OnInit {
       if (this.description.backCardImage) {
         this.backImage = this.description.backCardImage;
       }
+    } else {
+      this.description = {
+        publisher: '',
+        edition: '',
+        year: '',
+        graded: '',
+        population: '',
+        description: card.description || '',
+        backCardImage: ''
+      };
     }
 
     this.name =
