@@ -250,19 +250,15 @@
 
 .c-header__logo {
   :host-context(.dark-mode) & {
-    // background-image: url("/assets/images/nav/logo-inverse.svg");
+    background-image: url("/assets/images/nav/logo-inverse.svg");
   }
 }
 
 .c-header__logo,
 .c-footer__logo {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   margin-right: 0.5rem;
-
-  @media only screen and (min-width: 1024px) {
-    width: 210px;
-  }
 }
 
 .c-header__svg-search {
@@ -277,7 +273,7 @@
   align-items: center;
 
   @media only screen and (min-width: 1024px) {
-    max-width: 620px;
+    max-width: 490px;
   }
 }
 
@@ -843,7 +839,7 @@ input:checked + .slider:before {
   background-color: #5588e6;
   color: #213458;
   padding-top: 3rem;
-  padding-bottom: 6rem;
+  padding-bottom: 8rem;
 
   @media only screen and (min-width: 1024px) {
     padding-bottom: 3rem;
@@ -940,15 +936,6 @@ input:checked + .slider:before {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   background-color: lighten(#5588e6, 15%);
-
-  .container {
-    @media only screen and (min-width: 1024px) {
-      max-width: 70%!important;
-    }
-    @media only screen and (min-width: 1440px) {
-      max-width: 50%!important;
-    }
-  }
 }
 
 .c-footer__input {
@@ -1013,11 +1000,6 @@ input:checked + .slider:before {
   a {
     color: white;
     transition: color 350ms ease-in-out;
-    :host-context(.dark-mode) & {
-      &:hover {
-        color: #5688E6;
-      }
-    }
 
     &:hover {
       color: #213458;
@@ -1119,19 +1101,5 @@ input:checked + .slider:before {
 
   :host-context(.dark-mode) & {
     background-color: #213458;
-  }
-}
-
-.c-network {
-  display: none;
-  @media only screen and (min-width: 1024px) {
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
-    background-color: rgba(#ffffff, 0.75);
-    padding: 1rem;
-    border-radius: 16px;
-    color: black;
-    border: 1px solid black;
   }
 }

@@ -1,19 +1,7 @@
-<a
-  *ngIf="owner !== '0x000000000000000000000000000000000000dEaD'"
-  [routerLink]="id ? ['/details/' + id] : []"
-  class="c-card"
-  [ngClass]="{ auction: auction === true }"
->
-  <figure class="c-card__figure">
-    <lib-ngx-image-zoom
-      *ngIf="!isVideo && view === 'details'"
-      class="c-card__figure__video"
-      [zoomMode]="hover"
-      [thumbImage]="image"
-      [src]="image"
-    ></lib-ngx-image-zoom>
+<a [routerLink]="id ? ['/details/' + id] : []" class="c-card">
+  <figure class="c-card__figure mb-2">
     <img
-      *ngIf="!isVideo && view !== 'details'"
+      *ngIf="!isVideo"
       class="c-card__figure__video"
       [ngClass]="{
         shadow_card: physical,
@@ -32,12 +20,38 @@
       playsinline
       loop
       [src]="image"
-    ></video>
-
-    <div
-      *ngIf="auction && endDate && view !== 'profile'"
-      class="c-card__countdown"
     >
+    </video>
+    <div *ngIf="auction && endDate && view !== 'details' && view !== 'profile'" class="c-card__countdown">
+      <countdown #cd [config]="config"></countdown>
+      <span class="ml-2">Left</span>
+      <span class="icon auctions p-0"></span>
+    </div>
+  </figure>
+  <figure class="c-card__figure" *ngIf="backSide">
+    <img
+      *ngIf="!isBackVideo"
+      class="c-card__figure__video"
+      [ngClass]="{
+        shadow_card: physical,
+        custom_border: customBorder
+      }"
+      [src]="backImage"
+      alt="image"
+    />
+
+    <video
+      *ngIf="isBackVideo"
+      ref="videoRef"
+      class="c-card__figure__video"
+      autoplay
+      muted
+      playsinline
+      loop
+      [src]="backImage"
+    >
+    </video>
+    <div *ngIf="auction && endDate && view !== 'details' && view !== 'profile'" class="c-card__countdown">
       <countdown #cd [config]="config"></countdown>
       <span class="ml-2">Left</span>
       <span class="icon auctions p-0"></span>
@@ -46,106 +60,43 @@
   <div *ngIf="view !== 'details'" class="c-card__body">
     <div class="c-card__top">
       <h1 class="c-card__title">
-        <span>{{ name }}</span>
+        {{ name }}
       </h1>
-      <div class="c-card__price" *ngIf="price">
+      <div class="c-card__price" *ngIf="price ">
         <span class="mr-2">{{ price }} </span>
         <span *ngIf="symbol == 'USDT'" class="icon usdt"></span>
       </div>
     </div>
-    <div *ngIf="description" class="c-card__description">
-      <p>{{ description }}</p>
-    </div>
-    <div *ngIf="!description" class="c-card__description">
-      <p>No description has been created for this NFT.</p>
-    </div>
+    <p class="mb-4 c-card__description">
+      {{ this.description && this.description.description ? this.description.description : '' }}
+    </p>
   </div>
   <div class="c-card__footer">
-    <div *ngIf="view !== 'details'" class="mb-4">
-      <ul class="c-card__list">
-        <li>
-          <span class="bold">Publisher: </span>
-          <span *ngIf="offChainData && offChainData.publisher">{{
-            offChainData.publisher
-          }}</span>
-          <span *ngIf="offChainData && !offChainData.publisher">Unset</span>
-        </li>
-        <li>
-          <span class="bold">Edition: </span>
-          <span *ngIf="offChainData && offChainData.edition">{{
-            offChainData.edition
-          }}</span>
-          <span *ngIf="offChainData && !offChainData.edition">Unset</span>
-        </li>
-        <li>
-          <span class="bold">Year: </span>
-          <span *ngIf="offChainData && offChainData.year">{{
-            offChainData.year
-          }}</span>
-          <span *ngIf="offChainData && !offChainData.year">Unset</span>
-        </li>
-        <li>
-          <span class="bold">Graded: </span>
-          <span *ngIf="offChainData && offChainData.graded">{{
-            offChainData.graded
-          }}</span>
-          <span *ngIf="offChainData && !offChainData.graded">Unset</span>
-        </li>
-        <li>
-          <span class="bold">Population: </span>
-          <span *ngIf="offChainData && offChainData.population">{{
-            offChainData.population
-          }}</span>
-          <span *ngIf="offChainData && !offChainData.population">Unset</span>
-        </li>
-      </ul>
+    <div *ngIf="physical && view !== 'details'" class="d-flex flex-row mb-2">
+      <span class="c-card__safe icon safe mb-2 mr-2"></span>
+      <span class="c-card__info">Digi Safe</span>
     </div>
-    <div class="c-card__footer-inner">
-      <div *ngIf="physical && view !== 'details'" class="d-flex flex-row">
-        <span class="c-card__safe icon safe mr-2"></span>
-        <span class="c-card__info">Digi Safe</span>
-      </div>
-      <div *ngIf="view !== 'details'" class="d-flex flex-row">
-        <span class="c-card__safe icon ethereum mr-2"></span>
-        <span class="c-card__info">ERC-20</span>
-      </div>
-      <div
-        *ngIf="owner && ownerUsername && view !== 'details'"
-        class="d-flex flex-row"
-      >
-        <span class="c-card__safe icon collections mr-2"></span>
-        <span class="c-card__info"> {{ ownerUsername }}</span>
-      </div>
+    <div *ngIf="owner && ownerUsername && view !== 'details'" class="d-flex flex-row">
+      <span class="c-card__safe icon collections mb-2 mr-2"></span>
+      <span class="c-card__info"> {{ ownerUsername }}</span>
     </div>
-    <div
-      *ngIf="
-        owner !== address &&
-        price &&
-        !auction &&
-        view !== 'details' &&
-        view !== 'profile'
-      "
-    >
+    <div *ngIf="owner !== address && price && !auction && view !== 'details' && view !== 'profile'">
       <a class="c-card__button btn btn-primary">BUY NOW</a>
     </div>
-    <div
-      *ngIf="
-        owner !== address && auction && view !== 'details' && view !== 'profile'
-      "
-    >
+    <div *ngIf="owner !== address && auction && view !== 'details' && view !== 'profile'">
       <button class="c-card__button btn btn-primary">
         <span *ngIf="price != null && !auction">BUY NOW</span>
         <span *ngIf="price != null && auction">BID NOW</span>
         <span *ngIf="price == null">DETAILS</span>
       </button>
     </div>
-    <!--  <div
+    <div
       *ngIf="!auction && !price && view !== 'details' && view !== 'profile'"
       class="c-card__arrow"
     >
       <span class="icon arrow mr-2 ml-auto"></span>
-    </div> -->
-    <!--   <a
+    </div>
+    <a
       *ngIf="
         owner &&
         !ownerUsername &&
@@ -155,7 +106,7 @@
       class="creator"
     >
       Owner Profile
-    </a> -->
+    </a>
     <span
       *ngIf="owner === '0x000000000000000000000000000000000000dEaD'"
       class="creator"

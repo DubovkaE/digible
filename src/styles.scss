@@ -1048,7 +1048,7 @@ span.icon {
   }
 
   &.star {
-    background-color: #E2DA24;
+    background-color: #213458;
     background-repeat: no-repeat;
     -webkit-mask-image: url("/assets/images/nav/star.svg");
     mask-image: url("/assets/images/nav/star.svg");
@@ -1062,20 +1062,12 @@ span.icon {
     background-image: url("/assets/images/nav/basket.svg");
   }
 
-  &.ethereum {
-    background-image: url("/assets/images/nav/eth.svg");
-  }
-
   &.search {
     background-image: url("/assets/images/nav/search.svg");
   }
 
   &.logo {
-    background-image: url("/assets/images/logo-small.svg");
-
-    @media only screen and (min-width: 1024px) {
-      background-image: url("/assets/images/logo-link.png");
-    }
+    background-image: url("/assets/images/nav/logo.svg");
   }
   
   &.info-icon {

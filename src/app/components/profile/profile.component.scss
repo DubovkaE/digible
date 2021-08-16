@@ -13,6 +13,7 @@
   justify-content: center;
   align-items: center;
   height: 30vh;
+  background-image: url("/assets/images/home/home-1.jpeg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -21,7 +22,6 @@
     z-index: 10;
     display: flex;
     justify-content: center;
-    background-size: contain;
     align-items: center;
     width: 100px;
     height: 100px;

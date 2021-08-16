@@ -1,35 +1,9 @@
 <div class="container page-top p-b-40">
   <div class="row p-b-20" *ngIf="!loading">
     <div class="col-lg-12 col-xs-12 p-b-10">
-      <div class="c-details">
-        <div class="c-details__inner">
-          <button class="c-details__back" (click)="goBack()">
-            <span class="icon arrow"></span>
-          </button>
-          <h1 class="c-details__title">{{ name }}</h1>
-          <span class="icon" *ngIf="isYours">
-            <div class="icon icon-creator"></div>
-          </span>
-          <a
-            *ngIf="
-              isYours &&
-              !auction &&
-              !price &&
-              ownerAddress !== '0x000000000000000000000000000000000000dEaD'
-            "
-            [routerLink]="['/explorer/create']"
-            class="btn btn-primary ml-auto"
-          >
-            <span class="btn-title">Sell</span>
-          </a>
-          <div
-            *ngIf="isYours && auction && price"
-            class="btn btn-secondary ml-auto"
-          >
-            <span class="btn-title">Already for sale</span>
-          </div>
-        </div>
-      </div>
+      <button class="c-details__back" (click)="goBack()">
+        <span class="icon arrow"></span>
+      </button>
     </div>
     <div
       class="col-lg-6 col-xs-6 right"
@@ -51,7 +25,7 @@
     </div>
   </div>
   <div class="row" *ngIf="!loading">
-    <div class="col-lg-4">
+    <div class="col-lg-4 p-b-40">
       <app-digi-card
         customBorder="{{ customBorder }}"
         view="details"
@@ -135,13 +109,33 @@
     <div class="col-lg-8">
       <div class="row">
         <div class="col-lg-12">
+          <div class="c-details">
+            <div class="c-details__title">
+              {{ name }}
+              <span class="icon" *ngIf="isYours">
+                <div class="icon icon-creator"></div>
+              </span>
+              <a
+                *ngIf="isYours && !auction && network === 'Matic' && !price"
+                [routerLink]="['/explorer/create', address, id]"
+                class="btn btn-primary ml-auto"
+              >
+                <span class="btn-title">Sell</span>
+              </a>
+              <a
+                *ngIf="isYours && !auction && network === 'Ethereum' && !price"
+                [routerLink]="['/explorer/create', nftAddress, id]"
+                class="btn btn-primary ml-auto"
+              >
+                <span class="btn-title">Sell</span>
+              </a>
+            </div>
+          </div>
           <div class="card min-height shadow mb-4">
             <div class="card-header py-3">
-              <h5
-                class="mt-2 font-weight-bold text-primary txt-title mb-0 mb-0"
-              >
+              <h6 class="m-0 font-weight-bold text-primary txt-title">
                 Sale Status
-              </h5>
+              </h6>
             </div>
             <div class="card-body" *ngIf="!auction && !buy">
               <div class="row">
@@ -170,20 +164,21 @@
 
             <div class="card-body" *ngIf="auction">
               <div class="row p-b-10">
-                <div class="col-4 sub-title" *ngIf="winner">Current bid:</div>
-                <div class="col-4 sub-title" *ngIf="!winner">Starter bid:</div>
-                <div class="col-6 f-s-20">
-                  <div class="c-details__price" *ngIf="price">
-                    <span class="mr-2">${{ price }} </span>
-                    <span *ngIf="symbol == 'USDT'" class="icon usdt"></span>
-                  </div>
+                <div class="col-lg-12 center sub-title" *ngIf="winner">
+                  Current bid
+                </div>
+                <div class="col-lg-12 center sub-title" *ngIf="!winner">
+                  Starter bid
+                </div>
+                <div class="col-lg-12 center f-s-20">
+                  {{ price }} {{ symbol }}
                 </div>
               </div>
 
               <div class="row p-b-10">
-                <div class="col-4 sub-title">Current Winner:</div>
-                <div class="col-6" *ngIf="!winner">None</div>
-                <div class="col-6" *ngIf="winner">
+                <div class="col-lg-12 center sub-title">Current Winner</div>
+                <div class="col-lg-12 center" *ngIf="!winner">None</div>
+                <div class="col-lg-12 center" *ngIf="winner">
                   <div *ngIf="winnerIsVerified" class="icon-creator"></div>
                   <a [routerLink]="['/profile', winner]">
                     <span *ngIf="!winnerIsVerified && winner != address"
@@ -199,19 +194,19 @@
                 </div>
               </div>
               <div class="row p-b-10">
-                <div class="col-4 sub-title">End Date (Local):</div>
-                <div class="col-6">
+                <div class="col-lg-12 center sub-title">End Date (Local)</div>
+                <div class="col-lg-12 center">
                   {{ endDate * 1000 | date: "HH:mm:ss dd/MM/YYYY" }}
                 </div>
               </div>
               <div class="row">
-                <div class="col-4 sub-title">Last Bids:</div>
-                <div class="col-12" *ngIf="!loadingLastBids">
+                <div class="col-lg-12 sub-title">Last Bids</div>
+                <div class="col-lg-12" *ngIf="!loadingLastBids">
                   <div class="mx-auto text-center">
                     <app-loading></app-loading>
                   </div>
                 </div>
-                <div class="col-6" *ngFor="let bid of lastBids">
+                <div class="col-lg-12" *ngFor="let bid of lastBids">
                   <div class="row">
                     <div class="col-lg-4">{{ bid.amount }} {{ symbol }}</div>
                     <div class="col-lg-4">
@@ -229,12 +224,12 @@
               </div>
             </div>
             <div class="card-header py-3" *ngIf="buy || auction">
-              <h5 class="mt-2 font-weight-bold text-primary txt-title mb-0">
+              <h6 class="m-0 font-weight-bold text-primary txt-title">
                 Sale Actions
-              </h5>
+              </h6>
             </div>
             <div class="card-body" *ngIf="auction">
-              <div class="row" *ngIf="!isYours">
+              <div class="row">
                 <div class="col-lg-6 p-t-5">
                   <form class="user">
                     <div class="form-group">
@@ -251,7 +246,9 @@
                     </div>
                   </form>
                 </div>
-                <div class="col-lg-6 p-t-5" *ngIf="showAllow">
+              </div>
+              <div class="row" *ngIf="showAllow">
+                <div class="col-lg-12 p-t-5">
                   <div class="btn btn-primary full-width">
                     <span (click)="approve()">1. APPROVE FOR BID</span>
                   </div>
@@ -267,15 +264,9 @@
                   </button>
                 </div>
               </div>
-              <div class="row" *ngIf="winner && isYours">
-                <div class="col-lg-12 p-t-5">
-                  <span>CANNOT CANCEL AUCTION</span>
-                </div>
-              </div>
               <div class="row center">
                 <div class="col-lg-6 p-t-5">
                   <button
-                    *ngIf="!isYours"
                     class="btn btn-primary full-width"
                     [attr.disabled]="this.lowBid || showAllow ? '' : null"
                     (click)="bid()"
@@ -296,11 +287,7 @@
               </div>
               <div
                 class="row p-t-20"
-                *ngIf="
-                  allowed < priceBuyNowDecimals &&
-                  priceBuyNowDecimals > 0 &&
-                  !isYours
-                "
+                *ngIf="allowed < priceBuyNowDecimals && priceBuyNowDecimals > 0"
               >
                 <div class="col-lg-6 p-t-5">
                   <button
@@ -313,10 +300,7 @@
                   </button>
                 </div>
               </div>
-              <div
-                class="row"
-                *ngIf="priceBuyNowDecimals > 0 && allowed && !isYours"
-              >
+              <div class="row" *ngIf="priceBuyNowDecimals > 0 && allowed">
                 <div class="col-lg-6 p-t-5">
                   <button
                     [disabled]="allowed < priceBuyNowDecimals"
@@ -373,14 +357,14 @@
         <div class="col-lg-12">
           <div class="card min-height shadow mb-4">
             <div class="card-header py-3">
-              <h5 class="mt-2 font-weight-bold text-primary txt-title mb-0">
+              <h6 class="m-0 font-weight-bold text-primary txt-title">
                 Chain Info
-              </h5>
+              </h6>
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-4 sub-title">Contract Address:</div>
-                <div class="col-6">
+                <div class="col-lg-6 sub-title">Contract Address</div>
+                <div class="col-lg-6">
                   <a [href]="explorerPrefix + contractAddress" target="blank"
                     >{{ contractAddress | slice: 0:6 }}...{{
                       contractAddress | slice: 36:64
@@ -389,28 +373,28 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-4 sub-title">Token ID:</div>
-                <div class="col-6">{{ id }}</div>
+                <div class="col-lg-6 sub-title">Token ID</div>
+                <div class="col-lg-6">{{ id }}</div>
               </div>
               <div class="row">
-                <div class="col-4 sub-title">Blockchain:</div>
-                <div class="col-6">{{ networkWherCardIs }}</div>
+                <div class="col-lg-6 sub-title">Blockchain</div>
+                <div class="col-lg-6">{{ networkWherCardIs }}</div>
               </div>
             </div>
             <div class="card-header py-3">
-              <h5 class="mt-2 font-weight-bold text-primary txt-title mb-0">
+              <h6 class="m-0 font-weight-bold text-primary txt-title">
                 Token Info
-              </h5>
+              </h6>
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-4 sub-title">Name:</div>
-                <div class="col-6">{{ name }}</div>
+                <div class="col-lg-6 sub-title">Name</div>
+                <div class="col-lg-6">{{ name }}</div>
               </div>
               <div class="row">
-                <div class="col-4 sub-title">Physically backed:</div>
+                <div class="col-lg-6 sub-title">Physically backed</div>
                 <div
-                  class="col-6"
+                  class="col-lg-6"
                   data-tooltip="This NFT is the legal title to the physical underlying card displayed in the Image. It can be redeemed from the DIGISAFE™ for the physical card through digible.io and NFT would be burned. "
                 >
                   {{ physical ? "Yes" : "No" }}
@@ -438,8 +422,8 @@
                     '0x000000000000000000000000000000000000dEaD' || !physical
                 "
               >
-                <div class="col-4 sub-title">Owner:</div>
-                <div class="col-6" *ngIf="!ownerUsername">
+                <div class="col-lg-6 sub-title">Owner</div>
+                <div class="col-lg-6" *ngIf="!ownerUsername">
                   <a [routerLink]="['/profile', ownerAddress]"
                     >{{ ownerAddress | slice: 0:6 }}...{{
                       ownerAddress | slice: 36:64
@@ -447,13 +431,12 @@
                   >
                 </div>
                 <div class="col-lg-6" *ngIf="ownerUsername">
+                  <div class="icon-creator"></div>
                   <a
                     class="owner-name"
                     [routerLink]="['/profile', ownerUsername]"
+                    >{{ ownerUsername }}</a
                   >
-                    {{ ownerUsername }}
-                    <div class="icon-creator"></div>
-                  </a>
                 </div>
               </div>
               <div class="row p-t-15" *ngIf="hasRoyalty">
@@ -472,9 +455,9 @@
               </div>
             </div>
             <div class="card-header py-3">
-              <h5 class="mt-2 font-weight-bold text-primary txt-title mb-0">
+              <h6 class="m-0 font-weight-bold text-primary txt-title">
                 NFT Info
-              </h5>
+              </h6>
               <button
                 id="editDescriptionModal"
                 data-toggle="modal"
@@ -525,7 +508,7 @@
                   }}</span>
                 </li>
               </ul>
-              <ng-container
+              <!-- <ng-container
                 *ngFor="
                   let desc_item of description | keyvalue: keepOriginalOrder
                 "
@@ -536,19 +519,19 @@
                   </div>
                   <div class="col-lg-6">{{ desc_item.value || "..." }}</div>
                 </div>
-              </ng-container>
+              </ng-container> -->
             </div>
           </div>
         </div>
         <div class="col-lg-12 p-b-40">
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h5 class="mt-2 font-weight-bold text-primary txt-title mb-0">
+              <h6 class="m-0 font-weight-bold text-primary txt-title">
                 Last Sales
-              </h5>
+              </h6>
             </div>
             <div class="card-body">
-              <div>
+              <div class="container">
                 <div class="row" *ngIf="loadingLastSells">
                   <div class="col-lg-12">
                     <div class="mx-auto text-center">
@@ -558,34 +541,29 @@
                 </div>
                 <div class="row mb-4" *ngIf="!loadingLastSells">
                   <div class="col-lg-4 col-sm-4 col-xs-4">
-                    <span class="bold">Price</span>
+                    <span>Price</span>
                   </div>
                   <div class="col-lg-4 col-sm-4 col-xs-4">
-                    <span class="bold">Date</span>
+                    <span>Date</span>
                   </div>
                   <div class="col-lg-4 col-sm-4 col-xs-4">
-                    <span class="bold">Buyer</span>
+                    <span>Buyer</span>
                   </div>
                 </div>
-                <div class="row" *ngFor="let sell of lastSells">
+                <div class="row center" *ngFor="let sell of lastSells">
                   <div class="col-lg-4 col-sm-4 col-xs-4 sub-title">
-                    <div class="c-details__price">
-                      <span class="mr-2">${{ sell.humanAmount }} </span>
-                      <span *ngIf="symbol == 'USDT'" class="icon usdt"></span>
-                    </div>
+                    {{ sell.humanAmount }} {{ symbol }}
                   </div>
                   <div class="col-lg-4 col-sm-4 col-xs-4 sub-title">
-                    {{ sell.created * 1000 | date: "HH:mm | dd/MM/YYYY" }}
+                    {{ sell.created * 1000 | date: "HH:mm dd/MM/YYYY" }}
                   </div>
                   <div class="col-lg-4 col-sm-4 col-xs-4" *ngIf="sell.username">
-                    <div class="d-flex">
-                      <a
-                        class="owner-name"
-                        [routerLink]="['/profile', sell.username]"
-                        >{{ sell.username }}</a
-                      >
-                      <div class="icon-creator"></div>
-                    </div>
+                    <div class="icon-creator"></div>
+                    <a
+                      class="owner-name"
+                      [routerLink]="['/profile', sell.username]"
+                      >{{ sell.username }}</a
+                    >
                   </div>
                   <div
                     class="col-lg-4 col-sm-4 col-xs-4"
@@ -708,7 +686,6 @@
                     class="form-control form-control-user mb-2"
                     placeholder="Edition..."
                     [(ngModel)]="inputEdition"
-                    (ngModelChange)="inputEdition = $event.toLowerCase()"
                     name="edition"
                     maxlength="18"
                   />
@@ -728,9 +705,8 @@
                     class="form-control form-control-user mb-2"
                     placeholder="Graded..."
                     [(ngModel)]="inputGraded"
-                    (ngModelChange)="inputGraded = $event.toLowerCase()"
                     name="graded"
-                    maxlength="13"
+                    maxlength="15"
                   />
 
                   <input

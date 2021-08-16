@@ -1,8 +1,9 @@
 <div class="c-profile page-top">
-  <div *ngIf="profile && profile.picture" class="c-profile__hero" [ngStyle]="{'background-image': 'url(' + profile.picture  + ')'}">
+  <div class="c-profile__hero">
     <div class="c-profile__hero-overlay"></div>
-    <span *ngIf="profile && profile.picture" class="c-profile__avatar" [ngStyle]="{'background-image': 'url(' + profile.picture  + ')'}"></span>
-    <span *ngIf="!profile || !profile.picture" class="c-profile__avatar"></span>
+    <span class="c-profile__avatar">
+      <img *ngIf="profile" style="max-width: 50px" alt="image" class="" src="{{ profile.picture }}">
+    </span>
   </div>
   <div class="row p-t-40">
     <div class="container p-t-40">
@@ -15,17 +16,15 @@
           <div class="c-profile__creator icon-creator"></div>
           <h1>My Profile</h1>
         </div>
-        <div *ngIf="isYourProfile">
-          <button
-            id="editDescriptionModal"
-            data-toggle="modal"
-            data-target="#addDescriptionModal"
-            class="btn btn-primary mb-4"
-            #editDescriptionModal
-          >
-            <span>Edit profile</span>
-          </button>
-        </div>
+        <button
+                  id="editDescriptionModal"
+                  data-toggle="modal"
+                  data-target="#addDescriptionModal"
+                  class="button button m-l-20"
+                  #editDescriptionModal
+                >
+                <span>Edit profile</span>
+            </button>
         <div class="c-profile__address">
           <div>
             <span>{{ displayAddress }}</span>
@@ -68,7 +67,7 @@
         </div>
         <div class="c-profile__details">
           <div class="c-profile__detail-item">
-            <span *ngIf="myCards && myCards.length >= 1">{{
+            <span *ngIf="myCards && myCards.length > 1">{{
               myCards.length
             }}</span>
             <span *ngIf="myCards && myCards.length < 1">0</span>
@@ -114,10 +113,7 @@
     </div>
 
     <div class="row m-auto p-t-40" *ngIf="myCards != null">
-      <div
-        *ngFor="let nft of myCards"
-        class="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-      >
+      <div *ngFor="let nft of myCards" class="col-lg-4 col-md-6 col-sm-6">
         <app-digi-card
           view="profile"
           class="c-card-container"
@@ -272,7 +268,7 @@
       <div class="row">
         <div
           *ngFor="let nft of pendingTransfersFromMatic"
-          class="col-xl-3 col-lg-4 col-md-6 col-sm-12 p-t-40"
+          class="col-xl-4 col-lg-4 col-md-6 col-sm-12 p-t-40"
         >
           <app-digi-card
             view="profile"
@@ -298,7 +294,7 @@
           Other Collections
         </span>
       </div>
-      <div class="col-lg-2 col-sm-4 p-t-10 p-b-6 right">
+      <div class="col-lg-2 col-sm-4 p-t-10 p-b-6">
         <a
           class="btn btn-primary"
           data-toggle="modal"

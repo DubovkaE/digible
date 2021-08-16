@@ -15,8 +15,6 @@
 }
 
 .c-details__back {
-  display: flex;
-  align-items: center;
   background-color: transparent;
   border: none;
   transform: rotate(180deg);
@@ -24,25 +22,21 @@
 
 .c-details__title {
   display: flex;
-  font-size: 21px;
+  font-size: 31px;
   color: #213458;
   font-weight: bold;
   text-transform: capitalize;
-  margin-left: 1rem;
-  margin-bottom: 0;
-  @media only screen and (min-width: 1024px) {
-    font-size: 31px;
+  margin-bottom: 1rem;
+
+  .icon-creator {
+    width: 15px;
+    height: 15px;
+    background-image: url("/assets/images/icons/creator.svg");
   }
 
   :host-context(.dark-mode) & {
     color: #ffffff;
   }
-}
-
-.icon-creator {
-  width: 15px;
-  height: 15px;
-  background-image: url("/assets/images/icons/creator.svg");
 }
 
 .c-details__buttons {
@@ -81,20 +75,5 @@
   .icon {
     width: 1rem;
     width: 1rem;
-  }
-}
-
-.c-details__inner {
-  display: flex;
-  align-items: center;
-}
-
-.owner-name {
-  position: relative;
-
-  .icon-creator {
-    position: absolute;
-    right: -8px;
-    top: -12px;
   }
 }

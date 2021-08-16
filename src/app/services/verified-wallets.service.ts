@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Profile } from '../types/profile.type';
 import { OffchainService } from '../services/offchain.service';
 
-import { environment } from 'src/environments/environment';
 @Injectable()
 export class VerifiedWalletsService {
   public readonly verifiedProfiles = {
@@ -16,49 +15,24 @@ export class VerifiedWalletsService {
       twitter: 'steveaoki',
       twitch: 'steveaoki',
       instagram: 'steveaoki',
-      border: "Aoki's Card House",
-      website: 'https://www.aokiscardbreaks.com/',
-      description: 'The Ultimate Aoki cardhouse collection.',
-      imageUrl: '/assets/images/collection_heros/aoki-hero.jpeg',
-      collectionAvatar: '/assets/images/seller_avatars/aoki-icon.jpeg',
-    },
-    '0xe176A3B77DA8a0a463D7d77715f11446F7c75F31': {
-      username: '_SystemLabs',
-      twitter: 'wearesystemlabs',
-      instagram: '_systemLabs',
-      border: 'The _SystemLabs Collection',
-      email: 'info@systemlabs.io',
-      website: 'https://systemlabs.io/',
-      description: 'The Ultimate _SystemLabs NFT collection.',
-      imageUrl: '/assets/images/collection_heros/sl-hero.jpg',
-      collectionAvatar: '/assets/images/seller_avatars/sl-icon.png',
+      border: "Aoki's Card House"
     },
     '0x2e8e67e67a138e1D1aA24857A0242b788ca388ac': {
       username: 'The El Sputnik Collection',
-      border: 'The El Sputnik Collection',
-      description: 'The El Sputnik Collection',
-      imageUrl: '/assets/images/home/home-1.jpeg',
+      border: 'The El Sputnik Collection'
     },
     '0x341C42B0DE10FBDD60b10a0AbcD6C3565D736838': {
       username: 'DIGIZARD',
-      border: 'DIGIZARD',
-      description: 'The DIGIZARD Collection',
-      imageUrl: '/assets/images/home/home-1.jpeg',
+      border: 'DIGIZARD'
     },
     '0x828Baa8802CdC76Bee4904cF5E063f587185D564': {
       username: 'Testnet - Digible',
       twitter: 'digibleio',
-      border: 'Testnet - Digible',
-      description: 'The Testnet - Digible Collection',
-      website: 'https://systemlabs.io/',
-      imageUrl: '/assets/images/logo-link.png',
-      collectionAvatar: '/assets/images/seller_avatars/logo-link.png',
+      border: 'Testnet - Digible'
     },
     '0x5e1320Aa48eB7C927A9386f6B194bF57de149645': {
       username: 'Testnet - Escrow - Digible',
-      twitter: 'digibleio',
-      description: 'The Testnet - Escrow - Digible - Digible Collection',
-      imageUrl: '/assets/images/home/home-1.jpeg',
+      twitter: 'digibleio'
     },
 
     '0xa1c80b8ea2ce44b889f48dbfa166597434f33904': {
@@ -147,7 +121,7 @@ export class VerifiedWalletsService {
   }
 
   async getProfileData(address: string) {
-    const request = new Request(environment.offchainApi+`/profile/`+address,
+    const request = new Request(`http://localhost:3000/profile/`+address,
    // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
     {
         method: "GET"
@@ -156,6 +130,7 @@ export class VerifiedWalletsService {
     //.then(ttt => alert(ttt['picture'])) 
     //.then( ttt => {  return ttt })
     );
+    //console.log(data);
     return data;
   }
 

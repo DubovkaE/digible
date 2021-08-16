@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { trigger, style, animate, transition } from '@angular/animations';
 import { Stake } from 'src/app/components/staking/stake.type';
 import { StakingService } from 'src/app/services/staking.service';
 import { WalletService } from 'src/app/services/wallet.service';
@@ -10,16 +9,6 @@ import { environment } from 'src/environments/environment';
   selector: 'app-stake',
   templateUrl: './stake.component.html',
   styleUrls: ['./stake.component.scss'],
-  animations: [
-    trigger(
-      'enterAnimation', [
-        transition(':enter', [
-          style({transition:'opacity', opacity: 0}),
-          animate('500ms', style({transition:'opacity', opacity: 1}))
-        ]),
-      ]
-    )
-  ],
 })
 export class StakeComponent implements OnInit {
   @Input()
@@ -31,9 +20,6 @@ export class StakeComponent implements OnInit {
   loading = false;
 
   amountInput;
-  introDiv;
-  stakeDiv;
-  withdrawDiv;
 
   rewards;
   rewardsNumber;
@@ -62,7 +48,6 @@ export class StakeComponent implements OnInit {
     this.yourStake = '...';
     this.apr = '...';
     this.balance = '...';
-    this.setDivToDisplay('Intro');
     this.address = await this.wallet.getAccount();
     this.getApproved();
     this.getRewards();
@@ -177,21 +162,6 @@ export class StakeComponent implements OnInit {
     this.amountInput = (<HTMLInputElement>event.target).value
   }
 
-  setDivToDisplay(div) {
-    if(div === 'Intro'){
-      this.introDiv = true;
-      this.stakeDiv = false;
-      this.withdrawDiv = false;
-    } else if(div === 'Start Staking') {
-      this.stakeDiv = true;
-      this.introDiv = false;
-      this.withdrawDiv = false;
-    } else if(div === 'Withdraw') {
-      this.stakeDiv = false;
-      this.introDiv = false;
-      this.withdrawDiv = true;
-    }
-  }
 
   switchToMatic(): void {
     this.wallet.switchToMatic();

@@ -7,6 +7,7 @@
     </div>
     <div class="solid mt-4 mb-4"></div>
   </div>
+
   <div>
     <div class="row p-t-40" *ngIf="loading">
       <div class="col-lg-12">
@@ -15,7 +16,20 @@
         </div>
       </div>
     </div>
-    <div class="row justify-center mt-4" *ngIf="!loading"></div>
+    <div class="row justify-center mt-4" *ngIf="!loading">
+      <div class="col-lg-8 mb-2 center">
+
+        <p>
+          Enter your contact email and physical address for shipment below. The
+          Digible team will contact you from
+          <a href="mailto:admin@digible.io">admin@digible.io</a> to arrange your
+          shipping method. You will be provided a few shipping options depending
+          on your country/location and you can choose which works best for you
+          and provide payment for the shipping label. Tracking will be provided
+          after.
+        </p>
+      </div>
+    </div>
     <div class="row justify-center p-b-20" *ngIf="!loading">
       <div class="col-lg-2">
         <div class="mx-auto text-center">
@@ -28,15 +42,6 @@
       <div class="col-lg-6">
         <div class="mx-auto text-center">
           <div class="user">
-            <p>
-              Enter your contact email and physical address for shipment below.
-              The Digible team will contact you from
-              <a href="mailto:admin@digible.io">admin@digible.io</a> to arrange
-              your shipping method. You will be provided a few shipping options
-              depending on your country/location and you can choose which works
-              best for you and provide payment for the shipping label. Tracking
-              will be provided after.
-            </p>
             <div class="form-group p-t-10">
               <input
                 type="email"
@@ -45,6 +50,7 @@
                 [(ngModel)]="email"
               />
             </div>
+
             <div class="form-group p-t-10">
               <input
                 type="text"
@@ -54,17 +60,19 @@
               />
             </div>
           </div>
+
           <div class="mb-2" *ngIf="claimed">
             <b disabled="disabled" class="full-width p-t-10">
-              Claim is currently pending - contact admin@digible.io if you dont
-              hear back in 72 hours.
+              Claim is currently pending - contact admin@digible.io if you dont hear back in 72 hours.
             </b>
           </div>
+
           <div class="mb-2" *ngIf="!burned && !claimed">
             <button class="button full-width p-t-10">
               <span (click)="claim()">1. Claim</span>
             </button>
           </div>
+
           <div class="mb-2" *ngIf="!burned && claimed">
             <button class="button full-width p-t-10">
               <span (click)="burn()">2. Burn</span>

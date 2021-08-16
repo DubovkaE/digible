@@ -50,9 +50,7 @@ import { CollectionsComponent } from './components/collections/collections.compo
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { CountdownModule } from 'ngx-countdown';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
-import { NgxImageZoomModule } from 'ngx-image-zoom';
-import { HelpersService } from './services/helpers.service';
+import {HelpersService} from './services/helpers.service';
 
 @NgModule({
   declarations: [
@@ -95,9 +93,7 @@ import { HelpersService } from './services/helpers.service';
     NgxFileDropModule,
     DlDateTimeDateModule,
     DlDateTimePickerModule,
-    NgSelectModule,
-    BrowserAnimationsModule,
-    NgxImageZoomModule
+    NgSelectModule
   ],
   providers: [
     DatePipe,

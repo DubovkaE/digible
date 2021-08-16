@@ -94,6 +94,7 @@ export class OffchainService {
 
   async updProfile(address: string, profileImage: string): Promise<{uri: string, hash: string}> {
     var da = '{"id":"'+address+'", "picture":"'+profileImage+'"}';
+    //console.log(da);
       return (await this.http
         .post(
           'http://localhost:3000/profile/upd/'+address,

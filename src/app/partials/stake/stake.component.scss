@@ -193,7 +193,6 @@
   position: absolute;
   left: 20px;
   transform: rotate(180deg);
-  border: 0;
 }
 
 .c-card__errors {
@@ -247,38 +246,4 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
-}
-
-.c-card__staked {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border-top: 1px solid lightgray;
-
-  .c-card__balance {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .c-card__currency {
-    margin-left: initial;
-    line-height: 1;
-  }
-}
-
-.c-card__stake {
-  font-size: 31px;
-  font-weight: bold;
-  line-height: 1;
-  font-weight: bold;
-}
-
-.c-card__balance-item {
-  flex: 1;
-  display: flex;
-}
-
-.flex-end {
-  justify-content: flex-end;
 }
