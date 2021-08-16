@@ -6,3 +6,11 @@
   width: 100%;
   height: 200px;
 }
+
+.c-loading__description {
+  color: #213458;
+
+  :host-context(.dark-mode) & {
+    color: #fff;
+  }
+}

@@ -1,29 +1,51 @@
-<!-- <div class="c-card mt-4">
+<div *ngIf="introDiv" [@enterAnimation] class="c-card">
   <div class="c-card__apy"><span>Min 8% APY</span></div>
   <div class="c-card__body" *ngIf="loading">
     <p class="bold mt-2">Loading...</p>
   </div>
   <div class="c-card__body" *ngIf="!loading">
     <h3 class="c-card__title">{{ stake.name }} Stake</h3>
-    <p class="c-card__paragraph">Welcome to DIGI staking. You are able to stake for as long or as short as you wish. You will be able to  </p>
+    <p class="c-card__paragraph">
+      Welcome to DIGI staking. You are able to stake for as long or as short as
+      you wish. You will be able to
+    </p>
     <div class="d-flex">
       <div><span class="icon star mr-2"></span></div>
-      <p class="c-card__paragraph">APY is 8%. Some other text can go here about the lore Epsom sales dormat go here about the lore</p>
+      <p class="c-card__paragraph">
+        APY is 8%. Some other text can go here about the lore Epsom sales dormat
+        go here about the lore
+      </p>
     </div>
     <div class="d-flex">
       <div><span class="icon star mr-2"></span></div>
-      <p class="c-card__paragraph">APY is 8%. Some other text can go here about the lore Epsom sales dormat go here about the lore</p>
+      <p class="c-card__paragraph">
+        APY is 8%. Some other text can go here about the lore Epsom sales dormat
+        go here about the lore
+      </p>
     </div>
-    <div class="c-card__btn c-card__btn-primary btn mb-4">View Balance</div>
-    <div class="c-card__btn c-card__btn-secondary btn">Start Staking</div>
+    <button
+      (click)="setDivToDisplay('Withdraw')"
+      class="c-card__btn c-card__btn-primary btn mb-4"
+    >
+      View Balance
+    </button>
+    <button
+      (click)="setDivToDisplay('Start Staking')"
+      class="c-card__btn c-card__btn-secondary btn"
+    >
+      Start Staking
+    </button>
   </div>
-</div> -->
-<div class="c-card">
+</div>
+<div *ngIf="stakeDiv" [@enterAnimation] class="c-card">
   <div *ngIf="errorMessage" class="c-card__errors">
     {{ errorMessage }}
     <span (click)="errorMessage = false" class="c-card__errors-close">X</span>
   </div>
-  <!-- <span class="icon arrow c-card__arrow"></span> -->
+  <button
+    (click)="setDivToDisplay('Intro')"
+    class="icon arrow c-card__arrow"
+  ></button>
   <div class="c-card__apy"><span>Min 8% APY</span></div>
   <div class="c-card__body" *ngIf="loading">
     <p class="bold mt-2">Loading...</p>
@@ -34,7 +56,6 @@
     <div class="c-card__input-container">
       <div class="d-flex">
         <label class="c-card__label">Input</label>
-        <span class="c-card__balance">Staked: {{ yourStake }}</span>
         <span class="c-card__balance">Balance: {{ balance }}</span>
       </div>
       <div class="d-flex">
@@ -101,6 +122,48 @@
         Deposit
       </button>
     </div>
+  </div>
+</div>
+<div *ngIf="withdrawDiv" [@enterAnimation] class="c-card">
+  <div *ngIf="errorMessage" class="c-card__errors">
+    {{ errorMessage }}
+    <span (click)="errorMessage = false" class="c-card__errors-close">X</span>
+  </div>
+  <button
+    (click)="setDivToDisplay('Intro')"
+    class="icon arrow c-card__arrow"
+  ></button>
+  <div class="c-card__apy"><span>Min 8% APY</span></div>
+  <div class="c-card__body" *ngIf="loading">
+    <p class="bold mt-2">Loading...</p>
+  </div>
+  <div class="c-card__body" *ngIf="!loading">
+    <h3 class="c-card__title">Balance</h3>
+    <p>
+      The information shown below is a calculation of your current available
+      rewards from staking
+    </p>
+    <div class="c-card__staked">
+      <div class="c-card__balance">
+        <span class="mr-2 c-card__stake c-card__balance-item">{{ yourStake }}</span>
+        <div class="c-card__currency c-card__balance-item">
+          <span class="icon logo-inverse"></span>
+          <span class="c-card__currency-name">DIGI</span>
+        </div>
+        <span class="c-card__balance-item flex-end">Staked in total</span>
+      </div>
+    </div>
+    <div class="c-card__staked">
+      <div class="c-card__balance">
+        <span class="mr-2 c-card__stake c-card__balance-item">{{ rewards }}</span>
+        <div class="c-card__currency c-card__balance-item">
+          <span class="icon logo-inverse"></span>
+          <span class="c-card__currency-name">DIGI</span>
+        </div>
+        <span class="c-card__balance-item flex-end">$DIGI Earned</span>
+      </div>
+    </div>
+
     <div *ngIf="address && yourStake > 0.0">
       <button
         class="c-card__btn c-card__btn-secondary btn mt-4"

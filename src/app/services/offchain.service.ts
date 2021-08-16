@@ -92,21 +92,25 @@ export class OffchainService {
       .toPromise()) as any;
   }
 
-  async updProfile(address: string, profileImage: string): Promise<{uri: string, hash: string}> {
-    var da = '{"id":"'+address+'", "picture":"'+profileImage+'"}';
-    //console.log(da);
-      return (await this.http
-        .post(
-          'http://localhost:3000/profile/upd/'+address,
-          {
-            da,
-          },
-          { responseType: 'json' }
-        )
-        .toPromise()) as any;
-    //console.log(await this.http.post('http://localhost:3000/profile/upd/'+address, formData, { responseType: 'json' }).toPromise())
-    //return (await this.http.post('http://localhost:3000/profile/upd/'+address, formData, { responseType: 'json' }).toPromise()) as any;
-    //return (await this.http.post('http://obicon.xyz/api/profile_data/?update&address='+address, formData, { responseType: 'json' }).toPromise()) as any;
+  async updProfile(
+    address: string,
+    profileImage: string
+  ): Promise<{ uri: string; hash: string }> {
+    console.log('updProfile...');
+    var data = `{"id":"${address}", "picture":"${profileImage}"}`;
+    console.log(data);
+    return (await this.http
+      .post(
+        `http://localhost:3000/profile/upd/${address}`,
+        {
+          data,
+        },
+        { responseType: 'json' }
+      )
+      .toPromise()) as any;
+    // console.log(await this.http.post('http://localhost:3000/profile/upd/'+address, data, { responseType: 'json' }).toPromise())
+    // return (await this.http.post('http://localhost:3000/profile/upd/'+address, formData, { responseType: 'json' }).toPromise()) as any;
+    // return (await this.http.post('http://obicon.xyz/api/profile_data/?update&address='+address, data, { responseType: 'json' }).toPromise()) as any;
   }
 
   async uploadFile(

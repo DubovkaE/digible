@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
 import { MaticService } from 'src/app/services/matic.service';
@@ -21,15 +27,12 @@ import {
 } from 'ngx-file-drop';
 import { Console } from 'node:console';
 
-
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-
   @ViewChild('addTokenModal') addTokenModal: ElementRef;
 
   address;
@@ -62,17 +65,21 @@ export class ProfileComponent implements OnInit {
     private readonly router: Router,
     private readonly matic: MaticService,
     private readonly marketplace: MarketplaceService,
-    private readonly offChain: OffchainService,
-  ) { }
+    private readonly offChain: OffchainService
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(queryParams => {
-      const verifiedAddress = this.verifieds.getVerifiedProfile(queryParams.address);
+    this.route.params.subscribe((queryParams) => {
+      const verifiedAddress = this.verifieds.getVerifiedProfile(
+        queryParams.address
+      );
       if (verifiedAddress) {
         this.address = verifiedAddress;
         this.displayAddress = this.truncate(verifiedAddress, 15, '...');
       } else {
-        if (!this.walletService.getWeb3().utils.isAddress(queryParams.address)) {
+        if (
+          !this.walletService.getWeb3().utils.isAddress(queryParams.address)
+        ) {
           this.router.navigate(['/auctions']);
           return;
         }
@@ -92,7 +99,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  
   async dropped(files: NgxFileDropEntry[]): Promise<void> {
     if (files.length === 0) {
       return;
@@ -100,9 +106,8 @@ export class ProfileComponent implements OnInit {
     this.loadFiles = files;
     this.updateProfile();
   }
-  
- async updateProfile(): Promise<void> {
 
+  async updateProfile(): Promise<void> {
     const droppedFile = this.loadFiles[0];
     //console.log(droppedFile);
     if (droppedFile.fileEntry.isFile) {
@@ -110,25 +115,27 @@ export class ProfileComponent implements OnInit {
       fileEntry.file(async (file: File) => {
         this.loading = true;
         try {
-            const signature = '0x49c92d11f1cbb03e808d51982140a7b77eae92aac8ab453b44333715a5b471760b175f7112ff6be10a17bcc731024e456762affc3bd510256c758f7720007a7f1c';
-            const ipfs = await this.offChain.uploadFile(
-                signature,
-                file,
-                droppedFile.relativePath
-            );
-            //console.log(ipfs.uri);
-            await this.verifieds.updProfileData(this.address, ipfs.uri);
-            window.location.reload();
+          const signature =
+            '0x49c92d11f1cbb03e808d51982140a7b77eae92aac8ab453b44333715a5b471760b175f7112ff6be10a17bcc731024e456762affc3bd510256c758f7720007a7f1c';
+          const ipfs = await this.offChain.uploadFile(
+            signature,
+            file,
+            droppedFile.relativePath
+          );
+          //console.log(ipfs.uri);
+          await this.verifieds.updProfileData(this.address, ipfs.uri);
+          window.location.reload();
         } catch (e) {
-            alert('error: '+e);
+          console.log(e);
+          alert('error: ' + e.data);
         }
 
         this.loading = false;
       });
     }
-  }  
+  }
 
-  async loadData(){
+  async loadData() {
     this.profile = await this.verifieds.getFullProfile(this.address);
     this.myCards = null;
     this.otherNfts = null;
@@ -145,66 +152,73 @@ export class ProfileComponent implements OnInit {
     this.matic.connectPOSClient();
     this.loadPendingTransfersFromMatic();
     this.loadActivityHistory();
+    console.log(this.profile);
   }
 
- 
-  truncate (fullStr, strLen, separator) {
+  truncate(fullStr, strLen, separator) {
     if (fullStr.length <= strLen) return fullStr;
 
     separator = separator || '...';
 
     var sepLen = separator.length,
-        charsToShow = strLen - sepLen,
-        frontChars = Math.ceil(charsToShow/2),
-        backChars = Math.floor(charsToShow/2);
+      charsToShow = strLen - sepLen,
+      frontChars = Math.ceil(charsToShow / 2),
+      backChars = Math.floor(charsToShow / 2);
 
-    return fullStr.substr(0, frontChars) + 
-           separator + 
-           fullStr.substr(fullStr.length - backChars);
-};
+    return (
+      fullStr.substr(0, frontChars) +
+      separator +
+      fullStr.substr(fullStr.length - backChars)
+    );
+  }
 
   async loadActivityHistory(): Promise<void> {
-    const lastBuys = (await this.marketplace.lastBuys(this.address, 5)).map((bid: any) => {
-      bid.action = 'buy';
-      return bid;
-    });
+    const lastBuys = (await this.marketplace.lastBuys(this.address, 5)).map(
+      (bid: any) => {
+        bid.action = 'buy';
+        return bid;
+      }
+    );
 
     lastBuys.map((buy) => {
-      buy.isDigi = buy.tokenAddress.toLowerCase() === environment.nftAddress.toLowerCase();
+      buy.isDigi =
+        buy.tokenAddress.toLowerCase() === environment.nftAddress.toLowerCase();
     });
 
-    const lastBids = (await this.nft.getLastBidsByUser(this.address, 5)).map((bid: any) => {
-      bid.action = 'bid';
-      return bid;
-    });
+    const lastBids = (await this.nft.getLastBidsByUser(this.address, 5)).map(
+      (bid: any) => {
+        bid.action = 'bid';
+        return bid;
+      }
+    );
 
     let lastBuyNows = [];
 
     try {
-      lastBuyNows = (await this.nft.getLastAuctionBuyNowsByAddress(this.address, 5)).map((bid: any) => {
+      lastBuyNows = (
+        await this.nft.getLastAuctionBuyNowsByAddress(this.address, 5)
+      ).map((bid: any) => {
         bid.action = 'buy';
         bid.isDigi = true;
         return bid;
       });
-    } catch (e) {
-
-    }
+    } catch (e) {}
 
     lastBids.map(async (bid) => {
       bid.isDigi = true;
       bid.tokenId = (await this.nft.getAuctionById(bid.auctionId)).tokenId;
     });
 
-    this.activityHistory = [
-      ...lastBids,
-      ...lastBuys,
-      ...lastBuyNows
-    ].sort((a, b) => a.created > b.created && -1 || 1);
+    this.activityHistory = [...lastBids, ...lastBuys, ...lastBuyNows].sort(
+      (a, b) => (a.created > b.created && -1) || 1
+    );
     this.cdr.detectChanges();
   }
 
   async checkYourProfile(): Promise<void> {
-    this.isYourProfile = this.address.toLowerCase() === (await this.walletService.getAccount()).toLowerCase();
+    this.isYourProfile =
+      this.address.toLowerCase() ===
+      (await this.walletService.getAccount()).toLowerCase();
     if (this.isYourProfile) {
       this.loadPendingAuctions();
     }
@@ -236,7 +250,7 @@ export class ProfileComponent implements OnInit {
     } catch (e) {
       console.error(e);
     }
-    this.myCards = [...await this.nft.myNFTs(this.address), ...maticNfts];
+    this.myCards = [...(await this.nft.myNFTs(this.address)), ...maticNfts];
   }
 
   async onChangeInputAddress(): Promise<void> {
@@ -261,13 +275,12 @@ export class ProfileComponent implements OnInit {
 
   async loadBalances(): Promise<void> {
     let readOnly = false;
-    if (await this.walletService.getNetwork() === Network.UNSUPPORTED) {
+    if ((await this.walletService.getNetwork()) === Network.UNSUPPORTED) {
       readOnly = true;
     }
     this.nft.digiBalance(this.address, readOnly).then((balance) => {
-      
       this.digiBalance = this.math.toHumanValue(balance + '', 18) + '';
-      
+
       this.cdr.detectChanges();
     });
     this.nft.stableBalance(this.address, readOnly).then((balance) => {
@@ -297,9 +310,7 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
     try {
       await this.nft.cancel(auctionId);
-    } catch (e) {
-
-    }
+    } catch (e) {}
     this.loading = false;
     this.loadData();
   }
@@ -312,9 +323,7 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
     try {
       await this.nft.claim(auctionId);
-    } catch (e) {
-
-    }
+    } catch (e) {}
     this.loading = false;
     this.loadData();
   }
