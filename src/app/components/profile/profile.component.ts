@@ -133,7 +133,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  async loadData(): Promise<void> {
+  async loadData() {
     this.profile = await this.verifieds.getFullProfile(this.address);
     this.myCards = null;
     this.otherNfts = null;

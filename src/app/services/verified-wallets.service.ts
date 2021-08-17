@@ -136,33 +136,34 @@ export class VerifiedWalletsService {
       : undefined;
   }
 
-  async getFullProfile(address: string): Promise<any>{
-    // var data = this.verifiedProfiles[address];
-    const data = await this.getProfileData(address);
-    // if (data)
-    if (data.status !== 'success') {
+  async getFullProfile(address: string){
+    //var data = this.verifiedProfiles[address];
+    let data = await this.getProfileData(address);
+    //if (data)
+    if (data['status'] != 'success') {
         return undefined;
     } else {
         return data;
     }
   }
 
-  async getProfileData(address: string): Promise<any> {
-    const request = new Request(environment.offchainApi + `/profile/` + address,
-    // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
+  async getProfileData(address: string) {
+    const request = new Request(environment.offchainApi+`/profile/`+address,
+   // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
     {
-        method: 'GET'
+        method: "GET"
     });
-    // console.log('data:', data);
-    return await fetch(request).then(response => response.json()
-      // .then(ttt => alert(ttt['picture']))
-      // .then( ttt => {  return ttt })
+    var data = await fetch(request).then( response => response.json()
+    //.then(ttt => alert(ttt['picture']))
+    //.then( ttt => {  return ttt })
     );
+    //console.log('data:', data);
+    return data;
   }
 
-  async updProfileData(address: string, profileImage: string): Promise <boolean> {
+  async updProfileData(address: string, profileImage: string) {
     const ipfs = await this.offchain.updProfile(address, profileImage);
-    return ipfs.status === 'success';
+    return ipfs['status'] == 'success';
   }
 
   getCustomBorder(address: string): string | undefined {
