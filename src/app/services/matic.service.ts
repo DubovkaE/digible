@@ -14,7 +14,6 @@ export class MaticService {
     constructor(
         private readonly wallet: WalletService,
         private readonly nft: NftService,
-        
     ) {
     }
 

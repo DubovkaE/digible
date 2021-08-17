@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Profile } from '../types/profile.type';
-import { OffchainService } from '../services/offchain.service';
-import { environment } from 'src/environments/environment';
+import {Injectable} from '@angular/core';
+import {Profile} from '../types/profile.type';
+import {OffchainService} from '../services/offchain.service';
+import {environment} from 'src/environments/environment';
 
 @Injectable()
 export class VerifiedWalletsService {
@@ -16,7 +16,7 @@ export class VerifiedWalletsService {
       twitter: 'steveaoki',
       twitch: 'steveaoki',
       instagram: 'steveaoki',
-      border: "Aoki's Card House",
+      border: 'Aoki\'s Card House',
       website: 'https://www.aokiscardbreaks.com/',
       description: 'The Ultimate Aoki cardhouse collection.',
       imageUrl: '/assets/images/collection_heros/aoki-hero.jpeg',
@@ -94,14 +94,14 @@ export class VerifiedWalletsService {
       twitter: 'Dubovkas',
       instagram: 'Dubovka'
   },
-  '0x6dbdf9d84dE1d016c1598c3291278eD3aE7e569a':{
+  '0x6dbdf9d84dE1d016c1598c3291278eD3aE7e569a': {
     username: 'Roboskillz',
     email: 'r.hudson89@gmail.com',
     twitter: 'roboskillz',
     tiktok: 'roboskillz',
     instagram: 'roboskillz',
   },
-  '0xb4E1cf1b4C163f954cFAdb084ce51065213b9d33':{
+  '0xb4E1cf1b4C163f954cFAdb084ce51065213b9d33': {
     username: 'Crypt0Wizard',
     email: 'daniel.m@digible.io',
   }
@@ -136,34 +136,33 @@ export class VerifiedWalletsService {
       : undefined;
   }
 
-  async getFullProfile(address: string){
-    //var data = this.verifiedProfiles[address];
-    let data = await this.getProfileData(address);
-    //if (data)
-    if (data['status'] != 'success') {
+  async getFullProfile(address: string): Promise<any>{
+    // var data = this.verifiedProfiles[address];
+    const data = await this.getProfileData(address);
+    // if (data)
+    if (data.status !== 'success') {
         return undefined;
     } else {
         return data;
     }
   }
 
-  async getProfileData(address: string) {
-    const request = new Request(environment.offchainApi+`/profile/`+address,
-   // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
+  async getProfileData(address: string): Promise<any> {
+    const request = new Request(environment.offchainApi + `/profile/` + address,
+    // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
     {
-        method: "GET"
+        method: 'GET'
     });
-    var data = await fetch(request).then( response => response.json()
-    //.then(ttt => alert(ttt['picture'])) 
-    //.then( ttt => {  return ttt })
+    // console.log('data:', data);
+    return await fetch(request).then(response => response.json()
+      // .then(ttt => alert(ttt['picture']))
+      // .then( ttt => {  return ttt })
     );
-    //console.log('data:', data);
-    return data;
   }
 
-  async updProfileData(address: string, profileImage: string) {
+  async updProfileData(address: string, profileImage: string): Promise <boolean> {
     const ipfs = await this.offchain.updProfile(address, profileImage);
-    return ipfs['status'] == 'success';
+    return ipfs.status === 'success';
   }
 
   getCustomBorder(address: string): string | undefined {

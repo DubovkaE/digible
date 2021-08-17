@@ -33,7 +33,7 @@ export class StakingService {
   }
 
   async getTotalStakeForStake(): Promise<number> {
-    return await await this.getStakeContract(true)
+    return this.getStakeContract(true)
       .methods.tokenTotalStaked()
       .call();
   }

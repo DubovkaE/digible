@@ -22,8 +22,8 @@ export class WalletService {
   digiPublicSaleAddress = '0xabe5df074162904842e899a9119e72baef04c64d';
 
   constructor() {
-    this.provider = window['ethereum'];
-    this.web3 = new Web3(window['ethereum']);
+    this.provider = window.ethereum;
+    this.web3 = new Web3(window.ethereum);
   }
 
   @Output() loginEvent = new EventEmitter<void>();
