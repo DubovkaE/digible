@@ -232,11 +232,7 @@ export class PurchaseComponent implements OnInit {
           info['description'].includes(inputValue) ||
           info['name'].includes(inputValue)
         ) {
-          //console.log(info);
-
           nftResultList.push(info);
-
-          //searchBlock.innerHTML += '<app-digi-card id="'+info.id+'" price="" auction=""></app-digi-card>';
         }
       }
       this.nftList = nftResultList;
