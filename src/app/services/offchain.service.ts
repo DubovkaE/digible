@@ -93,11 +93,11 @@ export class OffchainService {
   }
 
   async updProfile(address: string, profileImage: string): Promise<{uri: string, hash: string}> {
-    var da = '{"id":"'+address+'", "picture":"'+profileImage+'"}';
-    //console.log(da);
-      return (await this.http
+    const da = '{"id":"' + address + '", "picture":"' + profileImage + '"}';
+    // console.log(da);
+    return (await this.http
         .post(
-          environment.offchainApi+'/profile/upd/'+address,
+          environment.offchainApi + '/profile/upd/' + address,
           {
             da,
           },
@@ -111,7 +111,7 @@ export class OffchainService {
     file: any,
     relativePath: string
   ): Promise<{ uri: string; hash: string }> {
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file, relativePath);
     formData.append('signature', signature);
     return (await this.http

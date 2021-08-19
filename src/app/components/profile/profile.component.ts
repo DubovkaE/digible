@@ -23,9 +23,7 @@ import { OffchainService } from 'src/app/services/offchain.service';
 import {
   NgxFileDropEntry,
   FileSystemFileEntry,
-  FileSystemDirectoryEntry,
 } from 'ngx-file-drop';
-import { Console } from 'node:console';
 
 @Component({
   selector: 'app-profile',
@@ -109,7 +107,7 @@ export class ProfileComponent implements OnInit {
 
   async updateProfile(): Promise<void> {
     const droppedFile = this.loadFiles[0];
-    //console.log(droppedFile);
+    // console.log(droppedFile);
     if (droppedFile.fileEntry.isFile) {
       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
       fileEntry.file(async (file: File) => {
@@ -122,7 +120,7 @@ export class ProfileComponent implements OnInit {
             file,
             droppedFile.relativePath
           );
-          //console.log(ipfs.uri);
+          // console.log(ipfs.uri);
           await this.verifieds.updProfileData(this.address, ipfs.uri);
           window.location.reload();
         } catch (e) {
@@ -156,7 +154,7 @@ export class ProfileComponent implements OnInit {
   }
 
   truncate(fullStr, strLen, separator) {
-    if (fullStr.length <= strLen) return fullStr;
+    if (fullStr.length <= strLen) { return fullStr; }
 
     separator = separator || '...';
 
