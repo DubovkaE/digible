@@ -15,7 +15,18 @@ export class ExplorerComponent implements OnInit {
   static cacheUntil: Date = null;
   static lastOffset: number;
 
+  typeFilter = 'ALL';
+  filterBy = [
+    { name: 'All', id: 'ALL' },
+    { name: 'Date ending Up', id: 'DATE_ENDING_UP' },
+    { name: 'Date ending Down', id: 'DATE_ENDING_DOWN' },
+    { name: 'Price Up', id: 'PRICE_UP' },
+    { name: 'Price Down', id: 'PRICE_DOWN' },
+    { name: 'By chain', id: 'CHAIN' },
+  ];
+
   nftList: MarketCard[] = null;
+  unfilteredNftList: MarketCard[] = null; 
   showSwitchToMatic = false;
   digibleNftAddress;
   network: Network;
@@ -55,12 +66,14 @@ export class ExplorerComponent implements OnInit {
     if (ExplorerComponent.cacheUntil > new Date() && ExplorerComponent.nftListCached) {
       this.nftList = ExplorerComponent.nftListCached;
       this.currentOffset = ExplorerComponent.lastOffset;
+      this.unfilteredNftList = this.nftList;
       return;
     }
     this.currentOffset = 0;
     this.endReached = false;
     this.nftList = (await this.market.getLastSales(this.limit)).sales;
     this.setCache();
+    this.unfilteredNftList = this.nftList;
     this.cdr.detectChanges();
   }
 
@@ -76,8 +89,46 @@ export class ExplorerComponent implements OnInit {
       this.endReached = true;
     }
     this.nftList = [...this.nftList, ...newNfts.sales];
+    if (this.typeFilter !== 'ALL') {
+      this.changeFilter(this.typeFilter);
+    } else {
+      this.nftList = this.unfilteredNftList;
+    }
     this.setCache();
     this.loading = false;
+  }
+  
+  changeFilter2(): void {
+  }
+
+  changeFilter(typeFilter): void {
+    this.loading = true;
+    setTimeout(async () => {
+        this.typeFilter = typeFilter;
+
+        switch (this.typeFilter) {
+            case 'PRICE_UP':
+                this.nftList.sort((a, b) => (a.price > b.price) ? 1 : -1);
+            break;
+            case 'PRICE_DOWN':
+                this.nftList.sort((a, b) => (a.price > b.price) ? -1 : 1);
+            break;
+            case 'DATE_ENDING_UP':
+                this.nftList.sort((a, b) => (a.endDate > b.endDate) ? 1 : -1);
+            break;
+            case 'DATE_ENDING_DOWN':
+                this.nftList.sort((a, b) => (a.endDate > b.endDate) ? -1 : 1);
+            break;
+            default:
+                this.nftList = this.unfilteredNftList; 
+            break;
+        }
+
+        if (this.nftList.length === 0 && !this.endReached) {
+          this.loadMore();
+        }
+        this.loading = false;
+    }, 200);
   }
 
   private setCache(): void {

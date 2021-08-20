@@ -14,6 +14,7 @@ export class AuctionsComponent implements OnInit {
   static cacheUntil: Date = null;
   static lastOffset: number;
   
+  typeFilter = 'ALL';
   filterBy = [
     { name: 'All', id: 'ALL' },
     { name: 'Date ending Up', id: 'DATE_ENDING_UP' },
@@ -30,8 +31,6 @@ export class AuctionsComponent implements OnInit {
   currentOffset = 0;
   endReached = false;
   readonly limit = 12;
-  typeFilter = 'ALL';
-
 
   constructor(
     private readonly nft: NftService,
@@ -94,7 +93,7 @@ export class AuctionsComponent implements OnInit {
     }
     this.nftList = [...this.nftList, ...newNfts];
     if (this.typeFilter !== 'ALL') {
-      this.changeFilter();
+      this.changeFilter(this.typeFilter);
     } else {
       this.nftList = this.unfilteredNftList;
     }
