@@ -47,7 +47,8 @@
         [items]="filterBy"
         bindLabel="name"
         bindValue="id"
-        [(ngModel)]="changeFilter"
+        [(ngModel)]="changeFilterModel"
+        (ngModelChange)="changeFilter($event)"
       >
       </ng-select>
     </div>

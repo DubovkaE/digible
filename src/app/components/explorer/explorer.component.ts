@@ -98,7 +98,7 @@ export class ExplorerComponent implements OnInit {
     this.loading = false;
   }
   
-  changeFilter2(): void {
+  changeFilterModel(): void {
   }
 
   changeFilter(typeFilter): void {

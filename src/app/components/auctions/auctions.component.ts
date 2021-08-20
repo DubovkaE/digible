@@ -101,6 +101,9 @@ export class AuctionsComponent implements OnInit {
     this.loading = false;
   }
   
+  changeFilterModel() : void {
+  }
+
   changeFilter(typeFilter): void {
     this.loading = true;
     setTimeout(async () => {
