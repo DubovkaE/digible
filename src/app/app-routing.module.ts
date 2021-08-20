@@ -35,6 +35,7 @@ import { PrivacyPolicyComponent } from './components/about/privacy-policy/privac
 
 import { LayoutComponent } from './layout/layout.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
+import {OnboardUserComponent} from './components/onboard-user/onboard-user.component';
 const routes: Routes = [
   {
     path: 'info',
@@ -163,13 +164,17 @@ const routes: Routes = [
       {
         path: 'privacy-policy',
         component: PrivacyPolicyComponent,
+      },
+      {
+        path: 'admin-onboard-user',
+        component: OnboardUserComponent,
       }
     ],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{
+  imports: [RouterModule.forRoot(routes, {
     scrollPositionRestoration: 'top'
   })],
   exports: [RouterModule],
