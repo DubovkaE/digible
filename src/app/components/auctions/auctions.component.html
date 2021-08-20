@@ -1,10 +1,21 @@
 <div class="container page-top" *ngIf="!loading">
   <div class="row c-page-title">
-    <div class="col-12 p-t-10 p-b-6">
+    <div class="col-9 p-t-10 p-b-6">
       <div class="section-title">
         <span class="icon auctions"></span>
         <span>Auctions</span>
       </div>
+    </div>
+    <div class="col-lg-3 right">
+      <ng-select
+        placeholder="Filter By"
+        [items]="filterBy"
+        bindLabel="name"
+        bindValue="id"
+        [(ngModel)]="changeFilter2"
+        (ngModelChange)="changeFilter($event)"
+      >
+      </ng-select>
     </div>
     <div class="solid mt-4 mb-4"></div>
   </div>

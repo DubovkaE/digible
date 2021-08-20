@@ -494,6 +494,7 @@ export class NftService {
       const price = (await this.getAuctionPrice(auctionId, auction)).price;
       digiCards.push({
         id: parseInt(auction.tokenId, undefined),
+        endDate: auction.endDate,
         auction: true,
         price: this.math.toHumanValue(price),
       });
@@ -547,6 +548,7 @@ export class NftService {
         digiCards.push({
           id: parseInt(auction.tokenId, undefined),
           auctionId,
+          endDate: auction.endDate,
           seller: auction.owner === account,
           sold,
         });
