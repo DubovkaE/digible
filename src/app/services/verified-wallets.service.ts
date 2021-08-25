@@ -120,7 +120,6 @@ export class VerifiedWalletsService {
   }
 
   getVerifiedProfile(name: string): string | undefined {
-    console.log('getVerifiedProfile:', this.inverseVerifiedProfiles[name]);
     return this.inverseVerifiedProfiles[name];
   }
 
@@ -137,9 +136,7 @@ export class VerifiedWalletsService {
   }
 
   async getFullProfile(address: string){
-    //var data = this.verifiedProfiles[address];
     let data = await this.getProfileData(address);
-    //if (data)
     if (data['status'] != 'success') {
         return undefined;
     } else {
@@ -149,15 +146,11 @@ export class VerifiedWalletsService {
 
   async getProfileData(address: string) {
     const request = new Request(environment.offchainApi+`/profile/`+address,
-   // const request = new Request(`http://www.obicon.xyz/api/profile_data?address=`+address,
     {
         method: "GET"
     });
     var data = await fetch(request).then( response => response.json()
-    //.then(ttt => alert(ttt['picture']))
-    //.then( ttt => {  return ttt })
     );
-    //console.log('data:', data);
     return data;
   }
 
