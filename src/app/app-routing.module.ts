@@ -166,7 +166,7 @@ const routes: Routes = [
         component: PrivacyPolicyComponent,
       },
       {
-        path: 'admin-onboard-user',
+        path: 'admin-onboard-form',
         component: OnboardUserComponent,
       }
     ],

@@ -1,4 +1,11 @@
 <div class="container page-top">
+  <div class="row" *ngIf="loading">
+    <div class="col-lg-12">
+      <div class="mx-auto text-center">
+        <app-loading></app-loading>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12 p-t-10 p-b-6">
       <span class="section-title"><span class="icon box"></span>Approve submissions form</span>
@@ -6,7 +13,7 @@
   </div>
   <div class="row justify-content-center">
     <div class="col-lg-8">
-      <form class="my-3" [formGroup]="obUserForm" (ngSubmit)="onboardForm()">
+      <form class="new-user-form my-3" [formGroup]="obUserForm" (ngSubmit)="onboardForm()">
         <div class="form-group">
           <label for="email">Email <span class="text-danger">*</span></label>
           <input type="text" class="form-control" id="email" placeholder="enter your email" formControlName="email">
@@ -30,9 +37,10 @@
         </div>
         <div class="form-group">
           <label for="customProfileName">Custom Profile Name <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="customProfileName" placeholder="enter profile name" formControlName="profileName">
-          <div *ngIf="obUserForm.controls.profileName.invalid && (obUserForm.controls.profileName.dirty || obUserForm.controls.profileName.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="obUserForm.controls.profileName.errors?.required">
+          <p>Instead of showing as a wallet address, your custom profile name will be used to represent your profile across the platform. Please do not include vulgar, insensitive, or offensive language. DO NOT IMPERSONATE ARTISTS OR BRANDS.</p>
+          <input type="text" class="form-control" id="customProfileName" placeholder="enter profile name" formControlName="username">
+          <div *ngIf="obUserForm.controls.username.invalid && (obUserForm.controls.username.dirty || obUserForm.controls.username.touched)" class="alert alert-danger mt-2">
+            <div *ngIf="obUserForm.controls.username.errors?.required">
               MetaMask Wallet address is required.
             </div>
           </div>
@@ -66,6 +74,7 @@
         </div>
         <div class="form-group">
           <label>Apply to become a Digisafe Operator?</label>
+          <p>Digible is always looking for partners to help expand our network's capabilities. As an operator you will receive: a) 10% of all net digable operational earnings from sales/auctions/custody for physical cards processed by the digisafe location; b) Labels for fully paid shipping with insurance paid by customer; c) “Checkmark” on platform to indicate authorized seller & digisafe operator. We will contact you further about this opportunity if there is sufficient availability / interest in your area.</p>
           <div class="custom-control custom-checkbox" formArrayName="checkDigisafeVariants" *ngFor="let variant of getControls(); let i = index">
             <input type="checkbox" class="custom-control-input" [id]="'digisafeVariant' + i" [formControlName]="i">
             <label class="custom-control-label" [for]="'digisafeVariant' + i">{{checkDigisafeVariants[i].label}}</label>
@@ -75,11 +84,9 @@
           <input type="text" class="form-control" id="facility" formControlName="facility"
                  placeholder="(e.g. hobby shop, dealer, museum/exhibition, custodian/vault/storage operator, etc)">
         </div>
-        <div class="form-group">
-          <button class="btn btn-primary" type="submit" [disabled]="!obUserForm.valid">Send</button>
-        </div>
-        <div class="form-group">
-          <button class="btn btn-primary" type="button" (click)="onboardFormReset()">Reset</button>
+        <div class="form-inline justify-content-between">
+          <button class="btn btn-primary" type="submit" [disabled]="!obUserForm.valid">Send form</button>
+          <button class="btn btn-primary" type="button" (click)="onboardFormReset()">Reset form</button>
         </div>
       </form>
     </div>
