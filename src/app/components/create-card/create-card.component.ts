@@ -54,7 +54,7 @@ export class CreateCardComponent implements OnInit {
   ngOnInit(): void {
     this.checkNetwork();
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         location.reload();
         this.checkNetwork();
       });

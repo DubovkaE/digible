@@ -87,7 +87,7 @@ export class ProfileComponent implements OnInit {
       this.loadData();
     });
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         this.loadData();
       });
     }

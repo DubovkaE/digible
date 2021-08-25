@@ -32,7 +32,7 @@ export class AuctionsComponent implements OnInit {
     this.loadData();
     this.checkNetwork();
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         this.loadData();
         this.checkNetwork();
       });

@@ -120,7 +120,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.loadData();
     });
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         location.reload();
       });
     }

@@ -74,7 +74,7 @@ export class LayoutComponent implements OnInit {
     this.currentTime = new Date().toLocaleString();
 
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         this.checkNetwork();
       });
     }
@@ -162,7 +162,7 @@ export class LayoutComponent implements OnInit {
     if (!mq.matches) {
       return;
     }
-    
+
     if (body.classList.contains('c-mobile__nav--active')) {
       body.classList.remove('c-mobile__nav--active');
       body.classList.add('c-mobile__nav--in-active');
