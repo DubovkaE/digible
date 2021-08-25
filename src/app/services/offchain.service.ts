@@ -119,6 +119,18 @@ export class OffchainService {
       .toPromise()) as any;
   }
 
+  async createUser(user: string): Promise<object> {
+    return (await this.http
+      .post(
+        environment.offchainApi + '/admin/user',
+        {
+          user,
+        },
+        { responseType: 'json' }
+      )
+      .toPromise()) as any;
+  }
+
   private getUri(): string {
     return environment.offchainApi;
   }
