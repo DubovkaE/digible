@@ -5,7 +5,7 @@ export type Profile = {
     twitch: string | null,
     website: string | null,
     description: string | null,
-    imageUrl: string | null, 
-    collectionAvatar: String | null,
-    picture: String | null
+    imageUrl: string | null,
+    collectionAvatar: string | null,
+    picture: string | null
 };

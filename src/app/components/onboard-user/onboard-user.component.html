@@ -84,9 +84,15 @@
           <input type="text" class="form-control" id="facility" formControlName="facility"
                  placeholder="(e.g. hobby shop, dealer, museum/exhibition, custodian/vault/storage operator, etc)">
         </div>
-        <div class="form-inline justify-content-between">
+        <div class="form-inline justify-content-between mb-3">
           <button class="btn btn-primary" type="submit" [disabled]="!obUserForm.valid">Send form</button>
           <button class="btn btn-primary" type="button" (click)="onboardFormReset()">Reset form</button>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="formSuccess">
+          Form was successfully sent!
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="formError">
+          An error occurred while trying to send form!
         </div>
       </form>
     </div>

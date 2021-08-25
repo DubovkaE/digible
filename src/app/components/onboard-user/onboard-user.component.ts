@@ -4,6 +4,7 @@ import { WalletService } from '../../services/wallet.service';
 import { NftService } from '../../services/nft.service';
 import { Router } from '@angular/router';
 import { OffchainService } from '../../services/offchain.service';
+import { NewUserResult } from '../../services/new-user-result.type';
 
 @Component({
   selector: 'app-onboard-user',
@@ -13,6 +14,11 @@ import { OffchainService } from '../../services/offchain.service';
 
 export class OnboardUserComponent implements OnInit {
   loading = false;
+  formSuccess = false;
+  formSuccessTimeout: NodeJS.Timeout;
+  formError = false;
+  formErrorTimeout: NodeJS.Timeout;
+
   checkDigisafeVariants = [
     { value: 0, label: 'I have a physical secure location - You will have custodial responsibilities to store items in secure, ' +
       'confidential, environmentally controlled location(s) for physical collectibles.'},
@@ -50,8 +56,6 @@ export class OnboardUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkIfAdmin();
-
-    console.log(this.obUserForm.value);
   }
 
   initialFormState(): void {
@@ -105,7 +109,7 @@ export class OnboardUserComponent implements OnInit {
   }
 
   async onboardForm(): Promise<object> {
-    // console.log(this.obUserForm.value);
+    this.loading = true;
     const form = this.obUserForm.value;
     const user = {
       email: form.email,
@@ -118,15 +122,32 @@ export class OnboardUserComponent implements OnInit {
       facility: form.facility || ''
     };
 
-    const result = await this.offChain.createUser(JSON.stringify(user));
+    const result: NewUserResult = await this.offChain.createUser(JSON.stringify(user));
 
-    console.log(result);
+    if (result.status === 'success') {
+      this.initialFormState();
+      this.formSuccessTimeout = null;
+      this.formSuccess = true;
+      this.setFormSuccessTimeout();
+    } else {
+      this.formErrorTimeout = null;
+      this.formError = true;
+      this.setFormErrorTimeout();
+    }
 
+    this.loading = false;
     return result;
+  }
+
+  setFormSuccessTimeout(timeout: number = 5000): void {
+    this.formSuccessTimeout = setTimeout(() => this.formSuccess = false, timeout);
+  }
+
+  setFormErrorTimeout(timeout: number = 5000): void {
+    this.formErrorTimeout = setTimeout(() => this.formError = false, timeout);
   }
 
   onboardFormReset(): void {
     this.initialFormState();
-    console.log(this.obUserForm.value);
   }
 }
