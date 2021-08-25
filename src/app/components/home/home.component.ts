@@ -50,6 +50,10 @@ export class HomeComponent {
     this.nftList = await this.nft.getNewNfts(this.limit, 0);
     this.setCache();
     this.unfilteredNftList = this.nftList;
+    for(var i = 0; i < this.nftList.length; i++){
+      var owner = await (await this.nft.owner(this.nftList[i].id)).address;
+      this.nftList[i].ownerAddress= owner;
+    }
   }
 
   async loadMore(): Promise<void> {
@@ -67,6 +71,11 @@ export class HomeComponent {
     }
     this.setCache();
     this.loading = false;
+  }
+
+  async checkOwner(id){
+    let owner = await this.nft.owner(id);
+    return owner;
   }
 
   changeFilter(): void {
