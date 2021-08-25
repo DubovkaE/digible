@@ -72,6 +72,15 @@ export class ExplorerComponent implements OnInit {
     this.currentOffset = 0;
     this.endReached = false;
     this.nftList = (await this.market.getLastSales(this.limit)).sales;
+
+    const filteredList = [];
+    for (const nft of this.nftList) {
+        const owner = await this.nft.owner(nft.id);
+        nft.network = owner.network;
+        filteredList.push(nft);
+    }
+    this.nftList = filteredList;
+
     this.setCache();
     this.unfilteredNftList = this.nftList;
     this.cdr.detectChanges();
