@@ -23,7 +23,8 @@ export class HomeComponent {
     { name: 'Date ending Down', id: 'DATE_ENDING_DOWN' },
     { name: 'Price Up', id: 'PRICE_UP' },
     { name: 'Price Down', id: 'PRICE_DOWN' },
-    { name: 'By chain', id: 'CHAIN' },
+    { name: 'Ethereum', id: 'ETHEREUM' },
+    { name: 'Matic', id: 'MATIC' },
   ];
 
   nftList: DigiCard[] = null;
@@ -116,6 +117,18 @@ export class HomeComponent {
                   }
                 }
                 this.nftList = filteredList;
+            break;
+            case 'ETHEREUM':
+            case 'MATIC':
+                const filteredList2 = [];
+                for (const nft of this.unfilteredNftList) {
+                  const owner = await this.nft.owner(nft.id);
+                  if (this.typeFilter == 'ETHEREUM' && owner.network == 'ETH' ||
+                      this.typeFilter == 'MATIC' && owner.network == 'MATIC') {
+                      filteredList2.push(nft);
+                  }
+                }
+                this.nftList = filteredList2;
             break;
             default:
                 this.nftList = this.unfilteredNftList;

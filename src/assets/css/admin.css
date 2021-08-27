@@ -11803,3 +11803,7 @@ body.sidebar-toggled footer.sticky-footer {
     align-self: center;
     width: 100%;
 }
+
+.page-top {
+    min-height: 300px;
+}

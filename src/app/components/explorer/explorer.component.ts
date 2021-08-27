@@ -22,7 +22,8 @@ export class ExplorerComponent implements OnInit {
     { name: 'Date ending Down', id: 'DATE_ENDING_DOWN' },
     { name: 'Price Up', id: 'PRICE_UP' },
     { name: 'Price Down', id: 'PRICE_DOWN' },
-    { name: 'By chain', id: 'CHAIN' },
+    { name: 'Ethereum', id: 'ETHEREUM' },
+    { name: 'Matic', id: 'MATIC' },
   ];
 
   nftList: MarketCard[] = null;
@@ -127,6 +128,12 @@ export class ExplorerComponent implements OnInit {
             break;
             case 'DATE_ENDING_DOWN':
                 this.nftList.sort((a, b) => (a.endDate > b.endDate) ? -1 : 1);
+            break;
+            case 'ETHEREUM':
+                this.nftList = this.unfilteredNftList.filter((a, b) => (a.network == 'ETHEREUM' || a.network == 'ETH'));
+            break;
+            case 'MATIC':
+                this.nftList = this.unfilteredNftList.filter((a, b) => (a.network == 'MATIC'));
             break;
             default:
                 this.nftList = this.unfilteredNftList; 
