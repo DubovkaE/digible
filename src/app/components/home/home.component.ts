@@ -19,6 +19,12 @@ export class HomeComponent {
     { name: 'All', id: 'ALL' },
     { name: 'Show Physical', id: 'PHYSICAL' },
     { name: 'Show DIGITAL', id: 'DIGITAL' },
+    { name: 'Date ending Up', id: 'DATE_ENDING_UP' },
+    { name: 'Date ending Down', id: 'DATE_ENDING_DOWN' },
+    { name: 'Price Up', id: 'PRICE_UP' },
+    { name: 'Price Down', id: 'PRICE_DOWN' },
+    { name: 'Ethereum', id: 'ETHEREUM' },
+    { name: 'Matic', id: 'MATIC' },
   ];
 
   nftList: DigiCard[] = null;
@@ -65,12 +71,15 @@ export class HomeComponent {
     }
     this.unfilteredNftList = [...this.unfilteredNftList, ...newNfts];
     if (this.typeFilter !== 'ALL') {
-      this.changeFilter();
+      this.changeFilter(this.typeFilter);
     } else {
       this.nftList = this.unfilteredNftList;
     }
     this.setCache();
     this.loading = false;
+  }
+  
+  changeFilterModel(): void {
   }
 
   async checkOwner(id){
@@ -78,34 +87,67 @@ export class HomeComponent {
     return owner;
   }
 
-  changeFilter(): void {
+  changeFilter(typeFilter): void {
     this.loading = true;
     setTimeout(async () => {
-      if (this.typeFilter === 'ALL') {
-        this.nftList = this.unfilteredNftList;
-        this.loading = false;
-        return;
-      }
-      const filteredList = [];
-      for (const nft of this.unfilteredNftList) {
-        let cached = localStorage.getItem('is_physical_' + nft.id);
-        if (cached === undefined) {
-          cached = (await this.offchain.getNftData(nft.id)).physical
-            ? '1'
-            : '0';
-          localStorage.setItem('is_physical_' + nft.id, cached);
+        this.typeFilter = typeFilter;
+        const filteredList = [];
+        switch (this.typeFilter) {
+            case 'PRICE_UP':
+                this.nftList.sort((a, b) => (a.price > b.price) ? 1 : -1);
+            break;
+            case 'PRICE_DOWN':
+                this.nftList.sort((a, b) => (a.price < b.price) ? 1 : -1);
+            break;
+            case 'DATE_ENDING_UP':
+                this.nftList.sort((a, b) => (a.endDate > b.endDate) ? 1 : -1);
+            break;
+            case 'DATE_ENDING_DOWN':
+                this.nftList.sort((a, b) => (a.endDate < b.endDate) ? 1 : -1);
+            break;
+            case 'PHYSICAL':
+            case 'DIGITAL':
+                for (const nft of this.unfilteredNftList) {
+                  let cached = localStorage.getItem('is_physical_' + nft.id);
+                  if (cached === undefined) {
+                    cached = (await this.offchain.getNftData(nft.id)).physical
+                      ? '1'
+                      : '0';
+                    localStorage.setItem('is_physical_' + nft.id, cached);
+                  }
+                  if (this.typeFilter === 'PHYSICAL') {
+                    if (cached === '1') {
+                      filteredList.push(nft);
+                    }
+                  } else {
+                    if (cached === '0') {
+                      filteredList.push(nft);
+                    }
+                  }
+                }
+                this.nftList = filteredList;
+            break;
+            case 'ETHEREUM':
+            case 'MATIC':
+                for (const nft of this.unfilteredNftList) {
+                    let network = localStorage.getItem('network_' + nft.id);
+                    if (network === undefined || network === null) {
+                        const owner = await this.nft.owner(nft.id);
+                        network = owner.network;
+                        localStorage.setItem('network_' + nft.id, network);
+                    }
+                    if (this.typeFilter == 'ETHEREUM' && network == 'ETH' ||
+                        this.typeFilter == 'MATIC' && network == 'MATIC') {
+                        filteredList.push(nft);
+                    }
+                }
+                this.nftList = filteredList;
+            break;
+            default:
+                this.nftList = this.unfilteredNftList;
+            break;
         }
-        if (this.typeFilter === 'PHYSICAL') {
-          if (cached === '1') {
-            filteredList.push(nft);
-          }
-        } else {
-          if (cached === '0') {
-            filteredList.push(nft);
-          }
-        }
-      }
-      this.nftList = filteredList;
+      
       if (this.nftList.length === 0 && !this.endReached) {
         this.loadMore();
       }

@@ -492,9 +492,14 @@ export class NftService {
         continue;
       }
       const price = (await this.getAuctionPrice(auctionId, auction)).price;
+      const id = parseInt(auction.tokenId, undefined);
+      const network = (await this.owner(id)).network;
+      
       digiCards.push({
-        id: parseInt(auction.tokenId, undefined),
+        id: id,
+        endDate: auction.endDate,
         auction: true,
+        network: network,
         price: this.math.toHumanValue(price),
       });
     }
@@ -547,6 +552,7 @@ export class NftService {
         digiCards.push({
           id: parseInt(auction.tokenId, undefined),
           auctionId,
+          endDate: auction.endDate,
           seller: auction.owner === account,
           sold,
         });

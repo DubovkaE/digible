@@ -5,7 +5,7 @@ export type Duel = {
     amount: string,
     color: 'GREEN' | 'RED',
     acceptedBy: string,
-    endDate: number,
+    endDate?: number,
     tokenIdAccepted: string,
     available: boolean
 };

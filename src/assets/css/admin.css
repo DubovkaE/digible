@@ -11794,3 +11794,16 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+.filterby {
+    display: flex
+}
+
+.filterby ng-select {
+    align-self: center;
+    width: 100%;
+}
+
+.page-top {
+    min-height: 300px;
+}

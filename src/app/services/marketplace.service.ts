@@ -283,6 +283,7 @@ export class MarketplaceService {
       cards.push({
         id: parseInt(sale.tokenId, undefined),
         auction: false,
+        endDate: sale.endDate,
         price: this.math.toHumanValue(sale.price),
         address: sale.tokenAddress,
       });
