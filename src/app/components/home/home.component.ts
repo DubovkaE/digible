@@ -82,6 +82,7 @@ export class HomeComponent {
     this.loading = true;
     setTimeout(async () => {
         this.typeFilter = typeFilter;
+        const filteredList = [];
         switch (this.typeFilter) {
             case 'PRICE_UP':
                 this.nftList.sort((a, b) => (a.price > b.price) ? 1 : -1);
@@ -97,7 +98,6 @@ export class HomeComponent {
             break;
             case 'PHYSICAL':
             case 'DIGITAL':
-                const filteredList = [];
                 for (const nft of this.unfilteredNftList) {
                   let cached = localStorage.getItem('is_physical_' + nft.id);
                   if (cached === undefined) {
@@ -120,15 +120,19 @@ export class HomeComponent {
             break;
             case 'ETHEREUM':
             case 'MATIC':
-                const filteredList2 = [];
                 for (const nft of this.unfilteredNftList) {
-                  const owner = await this.nft.owner(nft.id);
-                  if (this.typeFilter == 'ETHEREUM' && owner.network == 'ETH' ||
-                      this.typeFilter == 'MATIC' && owner.network == 'MATIC') {
-                      filteredList2.push(nft);
-                  }
+                    let network = localStorage.getItem('network_' + nft.id);
+                    if (network === undefined || network === null) {
+                        const owner = await this.nft.owner(nft.id);
+                        network = owner.network;
+                        localStorage.setItem('network_' + nft.id, network);
+                    }
+                    if (this.typeFilter == 'ETHEREUM' && network == 'ETH' ||
+                        this.typeFilter == 'MATIC' && network == 'MATIC') {
+                        filteredList.push(nft);
+                    }
                 }
-                this.nftList = filteredList2;
+                this.nftList = filteredList;
             break;
             default:
                 this.nftList = this.unfilteredNftList;
