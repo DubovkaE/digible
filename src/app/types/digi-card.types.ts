@@ -5,3 +5,4 @@ export type DigiCard = {
   network?: string;
   auction?: boolean;
 };
+

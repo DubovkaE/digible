@@ -36,8 +36,8 @@
     id="list-result"
     *ngIf="nftList != null"
   >
-    <div *ngFor="let nft of nftList" class="col-lg-4 col-md-6 col-sm-6">
-      <app-digi-card
+    <div *ngFor="let nft of nftList"  class="col-lg-4 col-md-6 col-sm-6">
+      <app-digi-card 
         class="c-card-container"
         id="{{ nft.id }}"
         price="{{ nft.price }}"

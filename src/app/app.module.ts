@@ -50,9 +50,11 @@ import { CollectionsComponent } from './components/collections/collections.compo
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { CountdownModule } from 'ngx-countdown';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { HelpersService } from './services/helpers.service';
+import { OnboardUserComponent } from './components/onboard-user/onboard-user.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -85,6 +87,7 @@ import { HelpersService } from './services/helpers.service';
     StakeComponent,
     StakingComponent,
     CollectionsComponent,
+    OnboardUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,7 +100,8 @@ import { HelpersService } from './services/helpers.service';
     DlDateTimePickerModule,
     NgSelectModule,
     BrowserAnimationsModule,
-    NgxImageZoomModule
+    NgxImageZoomModule,
+    ReactiveFormsModule
   ],
   providers: [
     DatePipe,

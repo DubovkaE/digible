@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { type } from 'node:os';
 import { environment } from 'src/environments/environment';
+import { NewUserResult } from './new-user-result.type';
 
 @Injectable()
 export class OffchainService {
@@ -116,6 +117,18 @@ export class OffchainService {
     formData.append('signature', signature);
     return (await this.http
       .post(this.getUri() + '/media', formData, { responseType: 'json' })
+      .toPromise()) as any;
+  }
+
+  async createUser(user: string): Promise<NewUserResult> {
+    return (await this.http
+      .post(
+        environment.offchainApi + '/admin/user',
+        {
+          user,
+        },
+        { responseType: 'json' }
+      )
       .toPromise()) as any;
   }
 

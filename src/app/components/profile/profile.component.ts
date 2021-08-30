@@ -87,7 +87,7 @@ export class ProfileComponent implements OnInit {
       this.loadData();
     });
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         this.loadData();
       });
     }
@@ -150,7 +150,6 @@ export class ProfileComponent implements OnInit {
     this.matic.connectPOSClient();
     this.loadPendingTransfersFromMatic();
     this.loadActivityHistory();
-    console.log(this.profile);
   }
 
   truncate(fullStr, strLen, separator) {

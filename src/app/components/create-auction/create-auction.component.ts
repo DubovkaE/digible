@@ -49,7 +49,7 @@ export class CreateAuctionComponent implements OnInit {
     }*/
     this.checkNetwork();
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         this.loadData();
         /*if (!this.canApprove) {
           this.checkNetwork();
@@ -119,7 +119,7 @@ export class CreateAuctionComponent implements OnInit {
           (this.minPrice * 0.1) -
           (this.minPrice * (this.royaltyFee / 100));
       } else {
-        this.receiveAmount = this.listingPrice 
+        this.receiveAmount = this.listingPrice
       }
       this.receiveAmount = this.receiveAmount;
     }, 100);

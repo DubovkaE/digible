@@ -32,7 +32,7 @@ export class AdminComponent implements OnInit {
     this.checkIfAdmin();
     this.checkNetwork();
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         this.checkNetwork();
       });
     }

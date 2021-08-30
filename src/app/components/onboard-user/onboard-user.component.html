@@ -1,0 +1,100 @@
+<div class="container page-top">
+  <div class="row" *ngIf="loading">
+    <div class="col-lg-12">
+      <div class="mx-auto text-center">
+        <app-loading></app-loading>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 p-t-10 p-b-6">
+      <span class="section-title"><span class="icon box"></span>Approve submissions form</span>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <form class="new-user-form my-3" [formGroup]="obUserForm" (ngSubmit)="onboardForm()">
+        <div class="form-group">
+          <label for="email">Email <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="email" placeholder="enter your email" formControlName="email">
+          <div *ngIf="obUserForm.controls.email.invalid && (obUserForm.controls.email.dirty || obUserForm.controls.email.touched)" class="alert alert-danger mt-2">
+            <div *ngIf="obUserForm.controls.email.errors?.required">
+              Email is required.
+            </div>
+            <div *ngIf="obUserForm.controls.email.errors?.email">
+              Invalid email.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="metaMaskWallet">MetaMask Wallet (ERC20) <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="metaMaskWallet" placeholder="enter wallet address" formControlName="walletAddress">
+          <div *ngIf="obUserForm.controls.walletAddress.invalid && (obUserForm.controls.walletAddress.dirty || obUserForm.controls.walletAddress.touched)" class="alert alert-danger mt-2">
+            <div *ngIf="obUserForm.controls.walletAddress.errors?.required">
+              MetaMask Wallet address is required.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="customProfileName">Custom Profile Name <span class="text-danger">*</span></label>
+          <p>Instead of showing as a wallet address, your custom profile name will be used to represent your profile across the platform. Please do not include vulgar, insensitive, or offensive language. DO NOT IMPERSONATE ARTISTS OR BRANDS.</p>
+          <input type="text" class="form-control" id="customProfileName" placeholder="enter profile name" formControlName="username">
+          <div *ngIf="obUserForm.controls.username.invalid && (obUserForm.controls.username.dirty || obUserForm.controls.username.touched)" class="alert alert-danger mt-2">
+            <div *ngIf="obUserForm.controls.username.errors?.required">
+              MetaMask Wallet address is required.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="twitterProfileLink">Twitter Profile Link</label>
+          <input type="text" class="form-control" id="twitterProfileLink" formControlName="twitter" placeholder="Include the link to your twitter profile to have it linked on your profile">
+          <div *ngIf="!obUserForm.controls.twitter.valid && obUserForm.controls.twitter.touched" class="alert alert-danger mt-2">
+            <div *ngIf="obUserForm.controls.twitter.errors.pattern">
+              Twitter profile URL format is wrong
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="instagramProfileLink">Instagram Profile Link</label>
+          <input type="text" class="form-control" id="instagramProfileLink" formControlName="instagram" placeholder="Include the link to your instagram profile to have it linked on your profile">
+          <div *ngIf="!obUserForm.controls.instagram.valid && obUserForm.controls.instagram.touched" class="alert alert-danger mt-2">
+            <div *ngIf="obUserForm.controls.instagram.errors.pattern">
+              Instagram profile URL format is wrong
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="twitchProfileLink">Twitch Profile Link</label>
+          <input type="text" class="form-control" id="twitchProfileLink" formControlName="twitch" placeholder="Include the link to your twitch profile to have it linked on your profile">
+          <div *ngIf="!obUserForm.controls.twitch.valid && obUserForm.controls.twitch.touched" class="alert alert-danger mt-2">
+            <div *ngIf="obUserForm.controls.twitch.errors.pattern">
+              Twitch profile URL format is wrong
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Apply to become a Digisafe Operator?</label>
+          <p>Digible is always looking for partners to help expand our network's capabilities. As an operator you will receive: a) 10% of all net digable operational earnings from sales/auctions/custody for physical cards processed by the digisafe location; b) Labels for fully paid shipping with insurance paid by customer; c) “Checkmark” on platform to indicate authorized seller & digisafe operator. We will contact you further about this opportunity if there is sufficient availability / interest in your area.</p>
+          <div class="custom-control custom-checkbox" formArrayName="checkDigisafeVariants" *ngFor="let variant of getControls(); let i = index">
+            <input type="checkbox" class="custom-control-input" [id]="'digisafeVariant' + i" [formControlName]="i">
+            <label class="custom-control-label" [for]="'digisafeVariant' + i">{{checkDigisafeVariants[i].label}}</label>
+          </div>
+
+          <label for="facility">Please describe your facility</label>
+          <input type="text" class="form-control" id="facility" formControlName="facility"
+                 placeholder="(e.g. hobby shop, dealer, museum/exhibition, custodian/vault/storage operator, etc)">
+        </div>
+        <div class="form-inline justify-content-between mb-3">
+          <button class="btn btn-primary" type="submit" [disabled]="!obUserForm.valid">Send form</button>
+          <button class="btn btn-primary" type="button" (click)="onboardFormReset()">Reset form</button>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="formSuccess">
+          Form was successfully sent!
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="formError">
+          An error occurred while trying to send form!
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

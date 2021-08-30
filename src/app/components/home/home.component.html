@@ -72,14 +72,16 @@
   </div>
 
   <div class="row m-auto pt-4" id="list-result" *ngIf="nftList != null">
-    <div *ngFor="let nft of nftList" class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-      <app-digi-card
-        class="c-card-container"
-        id="{{ nft.id }}"
-        price="{{ nft.price }}"
-        auction="{{ nft.auction }}"
-      ></app-digi-card>
-    </div>
+    <ng-container *ngFor="let nft of nftList">
+      <div  *ngIf="nft.ownerAddress != '0x000000000000000000000000000000000000dEaD'" class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <app-digi-card
+          class="c-card-container"
+          id="{{ nft.id }}"
+          price="{{ nft.price }}"
+          auction="{{ nft.auction }}"
+        ></app-digi-card>
+      </div>
+    </ng-container>
   </div>
 
   <div class="row center p-t-10">

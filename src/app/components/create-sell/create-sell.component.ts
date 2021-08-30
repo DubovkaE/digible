@@ -29,7 +29,7 @@ export class CreateSellComponent implements OnInit {
     this.loadData();
     this.checkNetwork();
     if (window.ethereum) {
-      window.ethereum.on('networkChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         this.checkNetwork();
         this.loadData();
       });

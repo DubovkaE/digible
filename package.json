@@ -23,6 +23,7 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@maticnetwork/maticjs": "^2.0.38",
     "@ng-select/ng-select": "^7.2.0",
+    "@wyre/api": "^1.0.5",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.6.0",
     "file-saver": "^2.0.5",
