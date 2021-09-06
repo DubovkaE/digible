@@ -114,7 +114,7 @@ export class OnboardUserComponent implements OnInit {
     const user = {
       email: form.email,
       wallet_address: form.walletAddress,
-      username: form.profileName,
+      username: form.username,
       twitter: form.twitter || '',
       instagram: form.instagram || '',
       twitch: form.twitch || '',

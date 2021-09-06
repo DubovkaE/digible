@@ -56,9 +56,9 @@ export class HomeComponent {
     this.nftList = await this.nft.getNewNfts(this.limit, 0);
     this.setCache();
     this.unfilteredNftList = this.nftList;
-    for(var i = 0; i < this.nftList.length; i++){
-      var owner = await (await this.nft.owner(this.nftList[i].id)).address;
-      this.nftList[i].ownerAddress= owner;
+    for(let i = 0; i < this.nftList.length; i++){
+      const owner = await (await this.nft.owner(this.nftList[i].id)).address;
+      this.nftList[i].ownerAddress = owner;
     }
   }
 
@@ -78,7 +78,7 @@ export class HomeComponent {
     this.setCache();
     this.loading = false;
   }
-  
+
   changeFilterModel(): void {
   }
 
@@ -147,7 +147,7 @@ export class HomeComponent {
                 this.nftList = this.unfilteredNftList;
             break;
         }
-      
+
       if (this.nftList.length === 0 && !this.endReached) {
         this.loadMore();
       }

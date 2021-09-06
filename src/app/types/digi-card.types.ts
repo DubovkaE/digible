@@ -4,5 +4,6 @@ export type DigiCard = {
   endDate?: string;
   network?: string;
   auction?: boolean;
+  ownerAddress?: string;
 };
 
